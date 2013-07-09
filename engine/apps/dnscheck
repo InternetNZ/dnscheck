@@ -134,6 +134,9 @@ sub main {
     elsif ( $what_test eq 'soa' ) {
         $check->soa->test( $zone );
     }
+    elsif ( $what_test eq 'www' ) {
+        $check->www->test( $zone );
+    }
     else {
         print "Don't know how to perform a test of type $what_test on a zone.\n";
         exit( 1 );

@@ -104,6 +104,7 @@ sub flush {
     $self->{test_consistency}  = undef;
     $self->{test_delegation}   = undef;
     $self->{test_nameserver}   = undef;
+    $self->{test_www}          = undef;
     $self->{test_dnssec}       = undef;
     $self->{test_mail}         = undef;
     $self->{faked}             = [];
@@ -206,6 +207,16 @@ sub asn {
     }
 
     return $self->{asn};
+}
+
+sub web {
+    my $self = shift;
+
+    unless ( defined( $self->{web} ) ) {
+        $self->{web} = DNSCheck::Agent::Web->new( $self );
+    }
+
+    return $self->{web};
 }
 
 sub config {
@@ -381,6 +392,16 @@ sub mail {
     return $self->{test_mail};
 }
 
+sub www {
+    my $self = shift;
+
+    unless ( defined( $self->{test_www} ) ) {
+        $self->{test_www} = DNSCheck::Test::WWW->new( $self );
+    }
+
+    return $self->{test_www};
+}
+
 ######################################################################
 
 1;
@@ -495,7 +516,9 @@ after a test is run, since before there is obviously no data to extract.
 
 =item ->mail()
 
-These ten methods all return properly configured objects of the
+=item ->www()
+
+These eleven methods all return properly configured objects of the
 respective test classes. For more details on how to use the objects,
 see the documentation on the modules in question. Generally, though,
 they have a main entry method called C<test> that runs all available
@@ -536,6 +559,7 @@ L<DNSCheck::Test::Common.pm>, L<DNSCheck::Test::Connectivity.pm>,
 L<DNSCheck::Test::Consistency.pm>, L<DNSCheck::Test::Delegation.pm>,
 L<DNSCheck::Test::DNSSEC.pm>, L<DNSCheck::Test::Host.pm>,
 L<DNSCheck::Test::Mail.pm>, L<DNSCheck::Test::Nameserver.pm>,
-L<DNSCheck::Test::SOA.pm>, L<DNSCheck::Test::Zone.pm>
+L<DNSCheck::Test::SOA.pm>, L<DNSCheck::Test::Zone.pm>,
+L<DNSCheck::Test::WWW.pm>
 
 =cut
