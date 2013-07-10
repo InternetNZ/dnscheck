@@ -967,4 +967,15 @@ messages:
   ZONE:VERSIONS:
     args: 1
     format: 'Module versions: %s.'
-
+  WWW:BEGIN:
+    args: 1
+    format: 'Starting web addresses fetch for %s'
+  WWW:END:
+    args: 1
+    format: 'Done with web addresses fetch for %s'
+  WWW:SERVER_ADDR_4:
+    args: 3
+    format: 'Zone %s has web host %s with v4 addresses %s'
+  WWW:SERVER_ADDR_6:
+    args: 3
+    format: 'Zone %s has web host %s with v6 addresses %s'

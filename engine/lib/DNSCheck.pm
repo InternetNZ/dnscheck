@@ -55,6 +55,7 @@ use DNSCheck::Test::Delegation;
 use DNSCheck::Test::Nameserver;
 use DNSCheck::Test::DNSSEC;
 use DNSCheck::Test::Mail;
+use DNSCheck::Test::WWW;
 use DNSCheck::Lookup::DNS;
 use DNSCheck::Lookup::Resolver;
 use DNSCheck::Lookup::ASN;

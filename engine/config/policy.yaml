@@ -218,6 +218,10 @@ loglevels:
   SOA:TTL_OK: info
   SOA:TTL_SMALL: notice
   SOA:SERIAL_IS_ZERO: warning
+  WWW:BEGIN: info
+  WWW:END: info
+  WWW:SERVER_ADDR_4: info
+  WWW:SERVER_ADDR_6: info
   ZONE:BEGIN: info
   ZONE:END: info
   ZONE:FATAL_DELEGATION: critical
