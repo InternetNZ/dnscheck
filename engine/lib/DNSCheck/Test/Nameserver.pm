@@ -177,12 +177,12 @@ sub _test_ip {
             $logger->auto( "NAMESERVER:LEGACY_ID_SKIP", $nameserver, $address );
         }
 
-        # FIXME: remove comment once query_nsid is complete
-        #$logger->auto("NAMESERVER:CHECKING_NSID", $nameserver, $address);
-        #my $nsid = $parent->dns->query_nsid($address, $zone, $qclass, "SOA");
-        #if ($nsid) {
-        #    $logger->auto("NAMESERVER:NSID", $nameserver, $address, $nsid);
-        #}
+        $logger->auto("NAMESERVER:CHECKING_NSID", $nameserver, $address);
+        my $nsid = $parent->dns->query_nsid($address, $zone, $qclass, "SOA");
+        if ( @$nsid) {
+            # $nsid is a array ref, with two values
+            $logger->auto("NAMESERVER:NSID", $nameserver, $address, @$nsid);
+        }
     }
 
     return $errors;

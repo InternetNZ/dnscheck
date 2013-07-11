@@ -124,8 +124,24 @@ sub new {
     return bless {};
 }
 
+# Original Net::DNS::Resolver->send supports two modes
+# First being called with <name, type, class>
+# Second being called with a single Net::DNS::Packet object
 sub send {
-    my ($self, $name, $type, $class) = @_;
+    my $self = shift;
+    my $param1 = shift;
+    my ($name, $type, $class);
+    if (ref($param1) eq 'Net::DNS::Packet') {
+        my $question = ($param1->question)[0];
+        $name = $question->qname;
+        $type = $question->qtype;
+        $class = $question->qclass;
+    }
+    else {
+        $name = $param1;
+        ($type, $class) = @_;
+    }
+    
     if ($type eq 'IN' or $type eq 'CH') {
         ($class, $type) = ($type, $class);
     }

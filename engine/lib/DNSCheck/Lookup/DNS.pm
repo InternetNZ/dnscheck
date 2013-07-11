@@ -469,6 +469,10 @@ sub _setup_resolver {
         if ( $flags->{dnssec} ) {
             $resolver->dnssec( 1 );
         }
+
+        if ( $flags->{nsid} ) {
+            $resolver->nsid( 1 );
+        }
     }
 
     if ( $resolver->resolver->usevc ) {
@@ -928,8 +932,6 @@ sub check_axfr {
 
 ######################################################################
 
-=pod
-
 sub query_nsid {
     my $self    = shift;
     my $address = shift;
@@ -937,42 +939,43 @@ sub query_nsid {
     my $qclass  = shift;
     my $qtype   = shift;
 
+
     unless ($self->_querible($address)) {
         return;
     }
 
-    my $resolver = $self->_setup_resolver();
-    $resolver->nameservers($address);
+    my $response = $self->query_explicit( $qname, $qclass, $qtype, $address, { nsid => 1 });
 
-    $resolver->debug(1);
+    # Query failed
+    return [] unless ($response);
 
-    my $optrr = new Net::DNS::RR {
-        name          => "",
-        type          => "OPT",
-        class         => 1024,
-        extendedrcode => 0x00,
-        ednsflags     => 0x0000,
-        optioncode    => 0x03,
-        optiondata    => 0x00,
-    };
+    # Response is empty
+    return [] if ($response->header->ancount == 0);
 
-    print Dumper($optrr);
+    # No additional record came with the response
+    return [] if (!$response->additional);
 
-    my $query = Net::DNS::Packet->new($qname, $qtype, $qclass);
-    $query->push(additional => $optrr);
-    $query->header->rd(0);
-    $query->{'optadded'} = 1;
+    #--------------
+    # NSID data is binary and contains:
+    # first two octets represent the option (3),
+    # two octets representing the length of the ID
+    # the rest is the ID
+    my ($opt_id, $nsid_len, $nsid_str) = unpack("nna*", $response->pop('additional')->rdata);
 
-    print Dumper($query);
+    return [] if ($opt_id eq "");
 
-    my $response = $resolver->send($query);
+    my ($hex_nsid, $print_nsid) = ('') x 2;
+    # If the rdata makes sense
+    if ($opt_id == 3 && $nsid_len > 0) {
+        $hex_nsid = join("", map { sprintf "%02x", $_ }
+                        unpack("C*", $nsid_str));
+        # Remove all non-printable characters
+        $print_nsid = $nsid_str =~ tr/[\0-\x08\x0B\x0C\x0E-\x1F\x7F]/ /r;
+    }
 
-    # FIXME: incomplete implementation
-
-    return;
+    return [$hex_nsid, $print_nsid];
 }
 
-=cut
 
 ######################################################################
 
@@ -1157,9 +1160,11 @@ Send a query to the default resolver(s). This will be a L<DNSCheck::Lookup::Reso
 
 =item my $bool = $dns->check_axfr(I<address>, I<qname>, I<qclass>);
 
-=item my $string = $dns->query_nsid(I<address>, I<qname>, I<qclass>, I<qtype>);
+=item my ($hex_id, $print_id) = $dns->query_nsid(I<address>, I<qname>, I<qclass>, I<qtype>);
 
-These need to be documented better.
+Queries an specific address for <qname, qclass, qtype> setting the NSID
+(RFC 5001) option. If the response contains NSID info, it will return
+the hex representation of the string, and a printable version.
 
 =item ->add_blacklist($addr,$name,$class,$type)
 

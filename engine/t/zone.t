@@ -39,7 +39,7 @@ ok(defined($dc->zone->test("iis.se")));
 $dc->log_nameserver_times('iis.se');
 my @res          = @{ $dc->logger->export };
 my $result_count = scalar(@res);
-ok(abs($result_count - 880) < 50,
+ok(abs($result_count - 900) < 50,
     "Got $result_count lines from logger.");
 my $info_count = scalar(grep { $_->[2] eq 'INFO' } @res);
 ok(abs($info_count - 144) < 40, "$info_count INFO-level results.");
@@ -52,7 +52,7 @@ ok(abs($warning_count - 5) < 5,
     "$warning_count WARNING-level results.");
 ok($dc->logger->count_warning == $warning_count);
 my $debug_count = scalar(grep { $_->[2] eq 'DEBUG' } @res);
-ok(abs($debug_count - 730) < 50, "$debug_count DEBUG-level results.");
+ok(abs($debug_count - 800) < 50, "$debug_count DEBUG-level results.");
 ok($dc->logger->count_debug == $debug_count);
 
 my %tag = map {$_->[3] => 1} @{$dc->logger->export};

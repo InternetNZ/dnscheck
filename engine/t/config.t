@@ -27,7 +27,7 @@ SKIP: {
     ok( ref( $conf )                  eq "DNSCheck::Config" );
     ok( ref( $conf->get( "net" ) )    eq "HASH" );
     ok( $conf->get( "hostname" )      eq hostname );
-    is( scalar(keys(%{$conf->{locale}{messages}})), 292, 'Messages are there');
+    is( scalar(keys(%{$conf->{locale}{messages}})), 299, 'Messages are there');
     is( scalar(keys(%{$conf->{loglevels}})), 217, 'Policy data is there');
 }
 

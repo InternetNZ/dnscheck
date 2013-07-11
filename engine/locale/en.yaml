@@ -35,6 +35,9 @@ messages:
   ASN:ANNOUNCE_BY:
     args: 2
     format: '%s announced by AS %s.'
+  ASN:ANNOUNCE_IN:
+    args: 2
+    format: '%s is covered by prefix %s.'
   ASN:INVALID_ADDRESS:
     args: 1
     format: '%s is an invalid IP address.'
@@ -47,6 +50,9 @@ messages:
   ASN:NOT_ANNOUNCE:
     args: 1
     format: '%s not announced.'
+  ASN:RAW:
+    args: 1
+    format: 'ASN lookup for %s got raw response "%s".'
   CONNECTIVITY:ANNOUNCED_BY_ASN:
     args: 2
     descr: The IP address is announced by an autonomous system (AS).
@@ -233,6 +239,9 @@ messages:
     args: 1
     descr: Only one IPv6 name server was found for the zone. You should always have at least two IPv6 name servers for a zone to be able to handle transient connectivity problems.
     format: Too few IPv6 name servers (%s).
+  DELEGATION:MIN_REFERRAL_SIZE:
+      args: 2
+      format: "Referral packet size for %s is %s bytes."
   DELEGATION:MIN_REFERRAL_SIZE_OK:
       args: 1
       format: "It is possible to build a referral packet for %s that works without EDNS0."
@@ -694,6 +703,12 @@ messages:
   NAMESERVER:AUTH:
     args: 3
     format: Name server %s (%s) authoritative for %s.
+  NAMESERVER:AUTH_TCP:
+    args: 1
+    format: Name server %s is authoritative via TCP.
+  NAMESERVER:AUTH_UDP:
+    args: 1
+    format: Name server %s is authoritative via UDP.
   NAMESERVER:AXFR_CLOSED:
     args: 3
     format: Name server %s (%s) closed for zone transfer of %s.
@@ -746,6 +761,9 @@ messages:
   NAMESERVER:NOT_RECURSIVE:
     args: 2
     format: Name server %s (%s) is not recursive.
+  NAMESERVER:NOT_SAME_SOURCE:
+    args: 1
+    format: Query destination and response source DONT match for address %s
   NAMESERVER:NO_TCP:
     args: 3
     descr: 'The name server failed to answer queries sent over TCP.  This is probably due to the name server not correctly set up or due to misconfgured filtering in a firewall. It is a rather common misconception that DNS does not need TCP unless they provide zone transfers - perhaps the name server administrator is not aware that TCP usually is a requirement.'
@@ -755,8 +773,8 @@ messages:
     descr: The name server failed to answer queries sent over UDP.  This is probably due to the name server not correctly set up or due to misconfigured filtering in a firewall.
     format: Name server %s (%s) does not answer queries over UDP.
   NAMESERVER:NSID:
-    args: 3
-    format: 'Name server ID for %s (%s): %s'
+    args: 4
+    format: 'Name server ID for %s (%s): %s "%s"'
   NAMESERVER:NSID_SKIP:
     args: 2
     format: Name server %s (%s) not checked for name server ID.
@@ -764,6 +782,9 @@ messages:
     args: 2
     descr: "The name server answers recursive queries for 3rd parties (such as DNSCheck). By making a recursive query to a name server that provides recursion, an attacker can cause a name server to look up and cache information contained in zones under their control. Thus the victim name server is made to query the attacker's malicious name servers, resulting in the victim caching and serving bogus data."
     format: Name server %s (%s) is recursive.
+  NAMESERVER:SAME_SOURCE:
+    args: 1
+    format: Query destination and response source match for address %s.
   NAMESERVER:SKIPPED_IPV4:
     args: 1
     format: 'IPv4 disabled - will not test name server at %s'

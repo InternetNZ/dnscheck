@@ -142,6 +142,21 @@ sub cdflag {
     return $self->resolver->cdflag( @_ );
 }
 
+sub nsid {
+    my $self = shift;
+
+    if (@_) {
+        $self->{optrr} = new Net::DNS::RR (
+            type => 'OPT',
+            name => '',
+            optioncode => 3, # NSID == 3
+        );
+    }
+    else {
+        return (defined $self->{optrr});
+    }
+}
+
 # Methods to support undelegated testing
 
 sub add_fake_glue {
@@ -482,8 +497,15 @@ sub get {
     my @ns_old = $self->{resolver}->nameservers;
     $self->{resolver}->nameservers( @ns ) if @ns;
 
+    # If the NSID flag is set, we need to prepare a packet in advance
+    my $qry_pkt = new Net::DNS::Packet( $name, $class, $type );
+    if ($self->nsid) {
+        # Add the OPT RR to the packet
+        $qry_pkt->unique_push(additional => $self->{optrr});
+    }
+
     my $before   = [ gettimeofday() ];
-    my $p        = eval { $self->{resolver}->send( $name, $class, $type ) };
+    my $p        = eval { $self->{resolver}->send( $qry_pkt ) };
     my $duration = tv_interval( $before );
 
     if ( $p and $p->answerfrom ) {
