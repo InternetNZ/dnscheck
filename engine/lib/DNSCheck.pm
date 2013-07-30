@@ -55,6 +55,7 @@ use DNSCheck::Test::Delegation;
 use DNSCheck::Test::Nameserver;
 use DNSCheck::Test::DNSSEC;
 use DNSCheck::Test::Mail;
+use DNSCheck::Test::MX;
 use DNSCheck::Test::WWW;
 use DNSCheck::Lookup::DNS;
 use DNSCheck::Lookup::Resolver;
@@ -391,6 +392,16 @@ sub mail {
     }
 
     return $self->{test_mail};
+}
+
+sub mx_records {
+    my $self = shift;
+
+    unless ( defined( $self->{test_mx} ) ) {
+        $self->{test_mx} = DNSCheck::Test::MX->new( $self );
+    }
+
+    return $self->{test_mx};
 }
 
 sub www {

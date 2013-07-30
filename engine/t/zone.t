@@ -39,7 +39,7 @@ ok(defined($dc->zone->test("iis.se")));
 $dc->log_nameserver_times('iis.se');
 my @res          = @{ $dc->logger->export };
 my $result_count = scalar(@res);
-ok(abs($result_count - 900) < 50,
+ok(abs($result_count - 980) < 50,
     "Got $result_count lines from logger.");
 my $info_count = scalar(grep { $_->[2] eq 'INFO' } @res);
 ok(abs($info_count - 144) < 40, "$info_count INFO-level results.");

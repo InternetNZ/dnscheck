@@ -164,6 +164,15 @@ loglevels:
   MAIL:DELIVERY_IPV6_OK: info
   MAIL:DELIVERY_IPV6_NOT_OK: notice 
   MAIL:ALL_MX_IN_ZONE: info
+  MX:BEGIN: info
+  MX:END: info
+  MX:HOSTS: info
+  MX:ALL_HOSTS_IN_ZONE: info
+  MX:RECORDS_NOT_FOUND: notice
+  MX:HOST_ERROR: warning
+  MX:IPV6_ONLY: notice 
+  MX:V4_ADDR: info
+  MX:V6_ADDR: info
   NAMESERVER:AUTH: info
   NAMESERVER:AXFR_CLOSED: info
   NAMESERVER:AXFR_OPEN: notice

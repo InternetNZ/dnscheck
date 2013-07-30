@@ -700,6 +700,33 @@ messages:
   MAIL:MAIL_EXCHANGER:
     args: 2
     format: Mail exchangers for %s found %s.
+  MX:BEGIN:
+    args: 0
+    format: MX record discovery starting
+  MX:HOSTS:
+    args: 1
+    format: MX records found %s
+  MX:ALL_HOSTS_IN_ZONE:
+    args: 1
+    format: All MX records under zone %s
+  MX:RECORDS_NOT_FOUND:
+    args: 1
+    format: No MX records found for zone %s
+  MX:HOST_ERROR:
+    args: 1
+    format: Hostname %s is invalid
+  MX:IPV6_ONLY:
+    args: 1
+    format: Mail exchanger %s is reachable by IPv6 only.
+  MX:V4_ADDR:
+    args: 3
+    format: MX host %s for zone %s has addresses %s 
+  MX:V6_ADDR:
+    args: 3
+    format: MX host %s for zone %s has addresses %s 
+  MX:END:
+    args: 0
+    format: MX record discovery finished
   NAMESERVER:AUTH:
     args: 3
     format: Name server %s (%s) authoritative for %s.

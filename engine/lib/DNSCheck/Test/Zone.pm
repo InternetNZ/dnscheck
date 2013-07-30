@@ -88,6 +88,7 @@ sub test {
     $errors += $parent->consistency->test( $zone );
     $errors += $parent->soa->test( $zone );
     $errors += $parent->connectivity->test( $zone );
+    $errors += $parent->mx_records->test( $zone );
     $errors += $parent->www->test( $zone );
     $errors += $parent->dnssec->test( $zone );
 

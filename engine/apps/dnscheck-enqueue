@@ -7,6 +7,7 @@ use warnings;
 use DNSCheck;
 use Getopt::Long;
 
+my $inputfile   = undef;
 my $source_name = 'dnscheck-enqueue';
 my $priority    = 5;
 my $help        = 0;
@@ -14,11 +15,12 @@ my $help        = 0;
 GetOptions(
     'source=s'   => \$source_name,
     'priority=i' => \$priority,
+    'file=s'     => \$inputfile,
     'help!'      => \$help,
 );
 
 if ( $help ) {
-    say "usage: $0 [--source=<name>] [--priority=<int>] domain domain domain ...";
+    say "usage: $0 [--source=<name>] [--priority=<int>] [--file=<filename>] domain domain domain ...";
     exit( 2 );
 }
 
@@ -36,6 +38,15 @@ my ( $source_id ) = $dbh->selectrow_array( q[SELECT id FROM source WHERE name = 
 
 my $sth = $dbh->prepare( q[INSERT INTO queue (domain, priority, source_id) VALUES (?,?,?)] );
 
-foreach my $domain ( @ARGV ) {
-    $sth->execute( $domain, $priority, $source_id );
+if (defined $inputfile && -f $inputfile) {
+    open(F, "<", "$inputfile") or die "Can't open given input file: $!\n";
+    while(<F>) {
+        $sth->execute( $_, $priority, $source_id );
+    }
+    close F;
+}
+else {
+    foreach my $domain ( @ARGV ) {
+        $sth->execute( $domain, $priority, $source_id );
+    }
 }
