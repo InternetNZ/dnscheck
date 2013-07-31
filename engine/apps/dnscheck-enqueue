@@ -41,6 +41,7 @@ my $sth = $dbh->prepare( q[INSERT INTO queue (domain, priority, source_id) VALUE
 if (defined $inputfile && -f $inputfile) {
     open(F, "<", "$inputfile") or die "Can't open given input file: $!\n";
     while(<F>) {
+        chomp;
         $sth->execute( $_, $priority, $source_id );
     }
     close F;
