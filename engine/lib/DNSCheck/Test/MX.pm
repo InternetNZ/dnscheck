@@ -9,6 +9,8 @@ use utf8;
 
 use base 'DNSCheck::Test::Common';
 
+use Net::IP 1.25 qw[ip_get_version];
+
 ######################################################################
 
 sub test {
@@ -47,27 +49,18 @@ sub test {
             next;
         }
 
-        my $ipv4 = $parent->dns->query_resolver( $hostname, "IN", "A" );
-        my $ipv6 = $parent->dns->query_resolver( $hostname, "IN", "AAAA" );
-
-        # REQUIRE: Warn if a mail exchanger is reachable by IPv6 only
-        if (   ( $ipv4 && scalar( $ipv4->answer ) == 0 )
-            && ( $ipv6 && scalar( $ipv6->answer ) > 0 ) )
-        {
-            $errors += $logger->auto( "MX:IPV6_ONLY", $hostname );
+        my @addr = $parent->dns->find_addresses( $hostname, $self->qclass);
+        my %addr_list;
+        foreach my $a (@addr) {
+            my $ver = ip_get_version($a);
+            push(@{$addr_list{$ver}}, $a);
         }
 
         # Store the addresses found
-        if ($ipv4 && scalar( $ipv4->answer ) > 0) {
-            my @addr = map { $_->address } $ipv4->answer;
-            $logger->auto( "MX:V4_ADDR", $zone, $hostname,
-                    join(",", @addr));
-        }
-        if ($ipv6 && scalar( $ipv6->answer ) > 0) {
-            my @addr = map { $_->address } $ipv6->answer;
-            $logger->auto( "MX:V6_ADDR", $zone, $hostname,
-                    join(",", @addr));
-        }
+        $logger->auto( "MX:V4_ADDR", $zone, $hostname,
+            join(",", @{$addr_list{4}})) if (defined $addr_list{4});
+        $logger->auto( "MX:V6_ADDR", $zone, $hostname,
+            join(",", @{$addr_list{6}})) if (defined $addr_list{6});
     }
 
   DONE:
