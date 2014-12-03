@@ -27,40 +27,37 @@ sub test {
     $logger->auto( "MX:BEGIN" );
 
     # REQUIRE: MX or A must exist for domain
-    my @mailhosts = $parent->dns->find_mx( $zone );
+    my ( $mailhosts, $ttl ) = $parent->dns->find_mx_with_ttl( $zone );
 
-    if ( @mailhosts ) {
-        $logger->auto( "MX:HOSTS", join( ",", @mailhosts ) );
+    if ( @$mailhosts ) {
+        $logger->auto( "MX:HOSTS", join( ",", @$mailhosts ), $ttl );
     }
 
-    if ( defined( $zone ) and scalar( @mailhosts ) == grep { m/$zone$/ } @mailhosts ) {
+    if ( defined( $zone ) and scalar( @$mailhosts ) == grep { m/$zone$/ } @$mailhosts ) {
         $logger->auto( "MX:ALL_HOSTS_IN_ZONE", $zone );
     }
 
-    unless ( scalar @mailhosts ) {
+    unless ( scalar @$mailhosts ) {
         $errors += $logger->auto( "MX:RECORDS_NOT_FOUND", $zone );
         goto DONE;
     }
 
     # REQUIRE: MX points to valid hostname
-    foreach my $hostname ( @mailhosts ) {
+    foreach my $hostname ( @$mailhosts ) {
         if ( $parent->host->test( $hostname ) > 0 ) {
             $errors += $logger->auto( "MX:HOST_ERROR", $hostname );
             next;
         }
 
-        my @addr = $parent->dns->find_addresses( $hostname, $self->qclass);
-        my %addr_list;
-        foreach my $a (@addr) {
-            my $ver = ip_get_version($a);
-            push(@{$addr_list{$ver}}, $a);
-        }
+        my $addr_set = $parent->dns->find_addresses_with_ttl( $hostname, $self->qclass);
 
         # Store the addresses found
         $logger->auto( "MX:V4_ADDR", $zone, $hostname,
-            join(",", @{$addr_list{4}})) if (defined $addr_list{4});
+            join(",", @{$addr_set->{4}{'addr'}}), $addr_set->{4}{'ttl'})
+            if (defined $addr_set->{4});
         $logger->auto( "MX:V6_ADDR", $zone, $hostname,
-            join(",", @{$addr_list{6}})) if (defined $addr_list{6});
+            join(",", @{$addr_set->{6}{'addr'}}), $addr_set->{6}{'ttl'})
+            if (defined $addr_set->{6});
     }
 
   DONE:

@@ -70,10 +70,10 @@ sub test {
         goto DONE;
     }
 
-    my @ns_at_child = $parent->dns->get_nameservers_at_child( $zone, $qclass );
-    my @ns_at_parent = $parent->dns->get_nameservers_at_parent( $zone, $qclass );
+    my ( $ns_at_child, $ttl_at_child )  = $parent->dns->get_nameservers_at_child( $zone, $qclass );
+    my ( $ns_at_parent, $ttl_at_parent ) = $parent->dns->get_nameservers_at_parent( $zone, $qclass );
 
-    unless ( $ns_at_child[0] and $ns_at_parent[0]) {
+    unless ( $ns_at_child->[0] and $ns_at_parent->[0]) {
 
         # This shouldn't happen because get_nameservers_at_child was also
         # called in DNSCheck::Test::Delegation->test
@@ -81,7 +81,7 @@ sub test {
         goto DONE;
     }
 
-    foreach my $ns ( distinct @ns_at_child, @ns_at_parent ) {
+    foreach my $ns ( distinct @$ns_at_child, @$ns_at_parent ) {
         $errors += $parent->nameserver->test( $zone, $ns );
     }
 

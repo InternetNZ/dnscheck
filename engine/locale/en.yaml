@@ -210,13 +210,13 @@ messages:
     args: 0
     format: No IPv6 name servers found.
   DELEGATION:NS_AT_CHILD:
-    args: 1
+    args: 2
     descr: This is the list of name servers that are listed at the child. It must include all name servers listed at the parent.
-    format: 'Name servers listed at child: %s'
+    format: 'Name servers listed at child: %s (TTL %s)'
   DELEGATION:NS_AT_PARENT:
-    args: 1
+    args: 2
     descr: This is the list of name servers that are listed at the parent. It should include all name servers listed at the child.
-    format: 'Name servers listed at parent: %s'
+    format: 'Name servers listed at parent: %s (TTL %s)'
   DELEGATION:NS_HISTORY:
     args: 2
     format: 'Previously used name servers for %s: %s'
@@ -699,13 +699,13 @@ messages:
     format: Mail exchanger %s is reachable by IPv6 only.
   MAIL:MAIL_EXCHANGER:
     args: 2
-    format: Mail exchangers for %s found %s.
+    format: Mail exchangers for %s found %s
   MX:BEGIN:
     args: 0
     format: MX record discovery starting
   MX:HOSTS:
-    args: 1
-    format: MX records found %s
+    args: 2
+    format: MX records found %s (TTL %s)
   MX:ALL_HOSTS_IN_ZONE:
     args: 1
     format: All MX records under zone %s
@@ -719,11 +719,11 @@ messages:
     args: 1
     format: Mail exchanger %s is reachable by IPv6 only.
   MX:V4_ADDR:
-    args: 3
-    format: MX host %s for zone %s has addresses %s 
+    args: 4
+    format: MX host %s for zone %s has addresses %s (TTL %s)
   MX:V6_ADDR:
-    args: 3
-    format: MX host %s for zone %s has addresses %s 
+    args: 4
+    format: MX host %s for zone %s has addresses %s (TTL %s)
   MX:END:
     args: 0
     format: MX record discovery finished
@@ -1022,8 +1022,8 @@ messages:
     args: 1
     format: 'Done with web addresses fetch for %s'
   WWW:SERVER_ADDR_4:
-    args: 3
-    format: 'Zone %s has web host %s with v4 addresses %s'
+    args: 4
+    format: 'Zone %s has web host %s with v4 addresses %s (TTL %s)'
   WWW:SERVER_ADDR_6:
-    args: 3
-    format: 'Zone %s has web host %s with v6 addresses %s'
+    args: 4
+    format: 'Zone %s has web host %s with v6 addresses %s (TTL %s)'

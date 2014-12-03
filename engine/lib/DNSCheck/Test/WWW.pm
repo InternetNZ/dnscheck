@@ -41,21 +41,16 @@ sub test {
 
     # Use some standard destinations for web
     foreach my $web_host ( 'www.' . $zone, $zone ) {
-        my @addresses = $parent->dns->find_addresses( $web_host, $self->qclass );
+        my $addr_set = $parent->dns->find_addresses_with_ttl( $web_host, $self->qclass );
         $self->webhost( $web_host );
         # $errors += $self->_test_ip( @addresses );
-        my %addr_list;
-        foreach my $addr (@addresses) {
-            # Because find_addresses above provided this set, it's
-            # guaranteed to be a valid value
-            my $ver = ip_get_version($addr);
-            push(@{$addr_list{$ver}}, $addr);
-        }
         # Just log the addresses found at the moment
         $logger->auto( "WWW:SERVER_ADDR_4", $zone, $web_host,
-            join(",", @{$addr_list{4}})) if (defined $addr_list{4});
+            join(",", @{$addr_set->{4}{'addr'}}), $addr_set->{4}{'ttl'})
+            if (defined $addr_set->{4});
         $logger->auto( "WWW:SERVER_ADDR_6", $zone, $web_host,
-            join(",", @{$addr_list{6}})) if (defined $addr_list{6});
+            join(",", @{$addr_set->{6}{'addr'}}), $addr_set->{6}{'ttl'})
+            if (defined $addr_set->{6});
     }
 
   DONE:

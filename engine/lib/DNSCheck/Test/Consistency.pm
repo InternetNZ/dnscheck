@@ -61,10 +61,10 @@ sub test {
     my %nameservers = ();
 
     # fetch all nameservers, both from parent and child
-    my @ns_parent = $parent->dns->get_nameservers_at_parent( $zone, $qclass );
-    my @ns_child = $parent->dns->get_nameservers_at_child( $zone, $qclass );
+    my ( $ns_parent, $ttl_parent ) = $parent->dns->get_nameservers_at_parent( $zone, $qclass );
+    my ( $ns_child, $ttl_child ) = $parent->dns->get_nameservers_at_child( $zone, $qclass );
 
-    foreach my $ns ( @ns_parent, @ns_child ) {
+    foreach my $ns ( @$ns_parent, @$ns_child ) {
         foreach my $address ( $parent->dns->find_addresses( $ns, $qclass ) ) {
             my $ip = Net::IP->new( $address );
 
@@ -136,10 +136,10 @@ sub test_nssets {
 
     return 0 unless $parent->config->should_run;
 
-    my @parent_ns = $parent->dns->get_nameservers_at_parent( $zone, $qclass );
+    my ( $parent_ns, $parent_ttl ) = $parent->dns->get_nameservers_at_parent( $zone, $qclass );
     my %sets;
 
-    foreach my $nsname ( @parent_ns ) {
+    foreach my $nsname ( @$parent_ns ) {
         my @addrs = $parent->dns->find_addresses( $nsname, $qclass );
         foreach my $addr ( @addrs ) {
             my $p = $parent->dns->query_explicit( $zone, $qclass, 'NS', $addr );

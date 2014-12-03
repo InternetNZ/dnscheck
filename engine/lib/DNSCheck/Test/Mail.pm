@@ -67,7 +67,7 @@ sub test {
     my @mailhosts = $parent->dns->find_mx( $domain );
 
     if ( @mailhosts ) {
-        $logger->auto( "MAIL:MAIL_EXCHANGER", $email, join( ",", @mailhosts ) );
+        $logger->auto( "MAIL:MAIL_EXCHANGER", $email, join( ",", @mailhosts ));
     }
 
     if ( defined( $zone ) and scalar( @mailhosts ) == grep { m/$zone$/ } @mailhosts ) {

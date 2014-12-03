@@ -117,10 +117,10 @@ sub _get_glue {
 
     my @glue = ();
 
-    my @ns = $parent->dns->get_nameservers_at_parent( $zone, $qclass );
-    @ns = () unless $ns[0];
+    my ( $ns, $ttl ) = $parent->dns->get_nameservers_at_parent( $zone, $qclass );
+    @$ns = () unless $ns->[0];
 
-    foreach my $nameserver ( @ns ) {
+    foreach my $nameserver ( @$ns ) {
         my $ipv4 = $parent->dns->query_parent( $zone, $nameserver, $qclass, "A" );
 
         if ( $ipv4 ) {
@@ -262,10 +262,10 @@ sub ns_parent_child_matching {
 
     return ( 0, 0 ) unless $self->parent->config->should_run;
 
-    my @ns_at_parent = $self->parent->dns->get_nameservers_at_parent( $zone, $self->qclass );
-    @ns_at_parent = () unless $ns_at_parent[0];
-    if ( scalar @ns_at_parent ) {
-        $self->logger->auto( "DELEGATION:NS_AT_PARENT", join( ",", @ns_at_parent ) );
+    my ( $ns_at_parent, $ttl_at_parent ) = $self->parent->dns->get_nameservers_at_parent( $zone, $self->qclass );
+    @$ns_at_parent = () unless $ns_at_parent->[0];
+    if ( scalar @$ns_at_parent ) {
+        $self->logger->auto( "DELEGATION:NS_AT_PARENT", join( ",", @$ns_at_parent ), $ttl_at_parent );
         $testable = 1;
     }
     else {
@@ -275,10 +275,10 @@ sub ns_parent_child_matching {
 
     return ( $errors, $testable ) unless $testable;
 
-    my @ns_at_child = $self->parent->dns->get_nameservers_at_child( $zone, $self->qclass );
-    @ns_at_child = () unless $ns_at_child[0];
-    if ( scalar @ns_at_child ) {
-        $self->logger->auto( "DELEGATION:NS_AT_CHILD", join( ",", @ns_at_child ) );
+    my ( $ns_at_child, $ttl_at_child ) = $self->parent->dns->get_nameservers_at_child( $zone, $self->qclass );
+    @$ns_at_child = () unless $ns_at_child->[0];
+    if ( scalar @$ns_at_child ) {
+        $self->logger->auto( "DELEGATION:NS_AT_CHILD", join( ",", @$ns_at_child ), $ttl_at_child );
     }
     else {
         $errors += $self->logger->auto( "DELEGATION:NOT_FOUND_AT_CHILD" );
@@ -289,8 +289,8 @@ sub ns_parent_child_matching {
 
     # REQUIRE: all NS at parent must exist at child [IIS.KVSE.001.01/r2]
     my @ns_at_both;
-    foreach my $ns ( @ns_at_parent ) {
-        unless ( scalar grep { /^\Q$ns\E$/i } @ns_at_child ) {
+    foreach my $ns ( @$ns_at_parent ) {
+        unless ( scalar grep { /^\Q$ns\E$/i } @$ns_at_child ) {
             $errors += $self->logger->auto( "DELEGATION:EXTRA_NS_PARENT", $ns );
         }
         else {
@@ -304,15 +304,15 @@ sub ns_parent_child_matching {
         $self->logger->auto( "DELEGATION:TOO_FEW_NS", scalar @ns_at_both );
     }
     elsif ( @ns_at_both == 0 and $testable ) {
-        $self->logger->auto( "DELEGATION:NO_COMMON_NS_NAMES", join( ",", @ns_at_parent ), join( ",", @ns_at_child ) );
+        $self->logger->auto( "DELEGATION:NO_COMMON_NS_NAMES", join( ",", @$ns_at_parent ), join( ",", @$ns_at_child ) );
     }
     elsif ( @ns_at_both > 1 ) {
         ## Everything is fine.
     }
 
     # REQUIRE: all NS at child may exist at parent
-    foreach my $ns ( @ns_at_child ) {
-        unless ( scalar grep { /^$ns$/i } @ns_at_parent ) {
+    foreach my $ns ( @$ns_at_child ) {
+        unless ( scalar grep { /^$ns$/i } @$ns_at_parent ) {
             $self->logger->auto( "DELEGATION:EXTRA_NS_CHILD", $ns );
         }
     }
@@ -361,8 +361,8 @@ sub check_history {
 
     my @old = ();
 
-    my @ns_at_parent = $parent->dns->get_nameservers_at_parent( $zone, $qclass );
-    my $current = \@ns_at_parent;
+    my ( $ns_at_parent, $ttl_at_parent ) = $parent->dns->get_nameservers_at_parent( $zone, $qclass );
+    my $current = $ns_at_parent;
 
     # Build a hash with all IP addresses for all current nameservers
     my %current_addresses =
@@ -404,9 +404,9 @@ sub in_zone_ns_glue {
     return unless $self->parent->config->should_run;
 
     my %glue = map { $_->name, $_->address } _get_glue( $self->parent, $zone );
-    my @ns_at_parent = $self->parent->dns->get_nameservers_at_parent( $zone, $self->qclass );
+    my ( $ns_at_parent, $ttl_at_parent ) = $self->parent->dns->get_nameservers_at_parent( $zone, $self->qclass );
 
-    foreach my $ns ( @ns_at_parent ) {
+    foreach my $ns ( @$ns_at_parent ) {
         if ( $ns =~ /\Q$zone\E$/ and not $glue{$ns} ) {
             $errors += $self->logger->auto( "DELEGATION:INZONE_NS_WITHOUT_GLUE", $ns, $zone );
         }
@@ -421,9 +421,9 @@ sub cname_as_ns {
 
     return 0 unless $self->parent->config->should_run;
 
-    my @ns = $self->parent->dns->get_nameservers_at_child( $zone, $self->qclass );
+    my ( $ns, $ttl ) = $self->parent->dns->get_nameservers_at_child( $zone, $self->qclass );
 
-    foreach my $ns ( @ns ) {
+    foreach my $ns ( @$ns ) {
         my $a    = $self->parent->dns->query_child( $zone, $ns, $self->qclass, 'A' );
         my $aaaa = $self->parent->dns->query_child( $zone, $ns, $self->qclass, 'AAAA' );
         my @rrs  = ();
@@ -458,7 +458,8 @@ sub referral_size {
     my ( $self, $zone ) = @_;
 
     my %data;
-    foreach my $nsname ( $self->parent->dns->get_nameservers_at_child( $zone, 'IN' ) ) {
+    my ( $ns, $ttl ) = $self->parent->dns->get_nameservers_at_child( $zone, 'IN' );
+    foreach my $nsname ( @$ns ) {
         $data{$nsname} = [ $self->parent->dns->find_addresses( $nsname, 'IN' ) ];
     }
 

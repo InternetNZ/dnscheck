@@ -42,6 +42,7 @@ use Carp;
 use Net::DNS::Resolver;
 use Net::DNS::Packet;
 use Net::DNS::RR;
+use List::Util 'shuffle';
 
 our %times;
 
@@ -444,7 +445,7 @@ sub simple_names_to_ips {
         }
     }
 
-    return @ips;
+    return shuffle(@ips);
 }
 
 sub names_to_ips {

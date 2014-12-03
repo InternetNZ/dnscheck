@@ -525,22 +525,24 @@ sub get_nameservers_at_parent {
     my $qclass = shift;
 
     my @ns;
+    my $ttl = -1;
 
     $self->logger->auto( "DNS:GET_NS_AT_PARENT", $qname, $qclass );
 
     if ( $self->parent->undelegated_test or $self->resolver->faked_zone( $qname ) ) {
         my @tmp = sort $self->resolver->faked_zone( $qname );
-        return @tmp;
+        return (\@tmp, $ttl);
     }
 
     my $packet = $self->query_parent( $qname, $qname, $qclass, "NS" );
 
-    return unless ( $packet );
+    return ( [], $ttl ) unless ( $packet );
 
     if ( $packet->authority > 0 ) {
         foreach my $rr ( $packet->authority ) {
             if ( ( $rr->type eq "NS" ) && $rr->nsdname ) {
                 push @ns, $rr->nsdname;
+                $ttl = $rr->ttl;
             }
         }
     }
@@ -548,12 +550,13 @@ sub get_nameservers_at_parent {
         foreach my $rr ( $packet->answer ) {
             if ( ( $rr->type eq "NS" ) && $rr->nsdname ) {
                 push @ns, $rr->nsdname;
+                $ttl = $rr->ttl;
             }
         }
     }
 
     my @tmp = sort( @ns );
-    return @tmp;
+    return ( \@tmp, $ttl );
 }
 
 sub get_nameservers_at_child {
@@ -562,21 +565,23 @@ sub get_nameservers_at_child {
     my $qclass = shift;
 
     my @ns;
+    my $ttl = -1;
 
     $self->logger->auto( "DNS:GET_NS_AT_CHILD", $qname, $qclass );
 
     my $packet = $self->query_child( $qname, $qname, $qclass, "NS" );
 
-    return unless ( $packet );
+    return ( [], $ttl ) unless ( $packet );
 
     foreach my $rr ( $packet->answer ) {
         if ( ( $rr->type eq "NS" ) && $rr->nsdname ) {
             push @ns, $rr->nsdname;
+            $ttl = $rr->ttl;
         }
     }
 
     my @tmp = sort( @ns );
-    return @tmp;
+    return ( \@tmp, $ttl );
 }
 
 ######################################################################
@@ -749,9 +754,60 @@ sub find_mx {
     }
 
   DONE:
-    $self->logger->auto( "DNS:FIND_MX_RESULT", $domain, join( ",", @dest ) );
+    $self->logger->auto( "DNS:FIND_MX_RESULT", $domain, join( ",", @dest) );
 
     return @dest;
+}
+
+sub find_mx_with_ttl {
+    my $self   = shift;
+    my $domain = shift;
+
+    my $packet;
+    my @dest = ();
+    my %ttl;
+
+    $self->logger->auto( "DNS:FIND_MX_BEGIN", $domain );
+
+    $packet = $self->query_resolver( $domain, "IN", 'MX' );
+    if ( $packet && scalar( $packet->answer ) > 0 ) {
+        foreach my $rr ( $packet->answer ) {
+            if ( ( $rr->type eq "MX" ) && $rr->exchange ) {
+                push @dest, [ $rr->preference, $rr->exchange ];
+                $ttl{$rr->type} = $rr->ttl;
+            }
+        }
+        @dest = map { $_->[1] } sort { $a->[0] <=> $b->[0] } @dest;
+        goto DONE if ( scalar @dest );
+    }
+
+    $packet = $self->query_resolver( $domain, "IN", 'A' );
+    if ( $packet && scalar( $packet->answer ) > 0 ) {
+        foreach my $rr ( $packet->answer ) {
+            if ( $rr->type eq "A" ) {
+                push @dest, $domain;
+                $ttl{$rr->type} = $rr->ttl;
+                goto DONE;
+            }
+        }
+    }
+
+    $packet = $self->query_resolver( $domain, "IN", 'AAAA' );
+    if ( $packet && scalar( $packet->answer ) > 0 ) {
+        foreach my $rr ( $packet->answer ) {
+            if ( $rr->type eq "AAAA" ) {
+                push @dest, $domain;
+                $ttl{$rr->type} = $rr->ttl;
+                goto DONE;
+            }
+        }
+    }
+
+  DONE:
+    my $ttl_str = join(' ', map { "$_:$ttl{$_}" } keys %ttl);
+    $self->logger->auto( "DNS:FIND_MX_RESULT", $domain, join( ",", @dest), $ttl_str );
+
+    return ( \@dest, $ttl_str );
 }
 
 sub find_addresses {
@@ -787,6 +843,45 @@ sub find_addresses {
     $self->logger->auto( "DNS:FIND_ADDRESSES_RESULT", $qname, $qclass, join( ",", @addresses ) );
 
     return @addresses;
+}
+
+sub find_addresses_with_ttl {
+    my $self   = shift;
+    my $qname  = shift;
+    my $qclass = shift;
+
+    my @addresses = ();
+    my %addr_set;
+
+    $self->logger->auto( "DNS:FIND_ADDRESSES", $qname, $qclass );
+
+    my $ipv4 = $self->query_resolver( $qname, $qclass, "A" );
+    my $ipv6 = $self->query_resolver( $qname, $qclass, "AAAA" );
+
+    unless ( ( $ipv4 && scalar( $ipv4->answer ) )
+        || ( $ipv6 && scalar( $ipv6->answer ) ) )
+    {
+        ## FIXME: error
+        goto DONE;
+    }
+
+    my @answers = ();
+    push @answers, $ipv4->answer if ( defined( $ipv4 ) && scalar( $ipv4->answer ) );
+    push @answers, $ipv6->answer if ( defined( $ipv6 ) && scalar( $ipv6->answer ) );
+
+    foreach my $rr ( @answers ) {
+        if ( ( $rr->type eq 'A' || $rr->type eq 'AAAA' ) && $rr->address ) {
+            push @addresses, $rr->address;
+            my $family = ( $rr->type eq 'A' ? 4 : 6 );
+            $addr_set{$family}{'ttl'} = $rr->ttl;
+            push(@{$addr_set{$family}{'addr'}}, $rr->address);
+        }
+    }
+
+  DONE:
+    $self->logger->auto( "DNS:FIND_ADDRESSES_RESULT", $qname, $qclass, join( ",", @addresses ) );
+
+    return \%addr_set;
 }
 
 ######################################################################
@@ -1142,9 +1237,9 @@ Send a query to the default resolver(s). This will be a L<DNSCheck::Lookup::Reso
 
 =item my $addrs = $dns->get_nameservers_ipv6(I<qname>, I<qclass>);
 
-=item my $ns = $dns->get_nameservers_at_parent(I<qname>, I<qclass>);
+=item my ( $ns, $ttl ) = $dns->get_nameservers_at_parent(I<qname>, I<qclass>);
 
-=item my $ns = $dns->get_nameservers_at_child(I<qname>, I<qclass>);
+=item my ( $ns, $ttl ) = $dns->get_nameservers_at_child(I<qname>, I<qclass>);
 
 =item $dns->init_nameservers(I<qname>, I<qclass>);
 
@@ -1184,7 +1279,7 @@ Check if the current error in the underlying resolver object is a timeout.
 
 =item ->find_mx($zone)
 
-Return the hostname(s) to which mail to the given zone name should be directed.
+Return the hostname(s) and ttl to which mail to the given zone name should be directed.
 
 =item ->logger()
 
