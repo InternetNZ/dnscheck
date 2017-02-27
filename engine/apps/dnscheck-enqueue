@@ -37,7 +37,7 @@ $dbh->do( q[INSERT IGNORE INTO source (name) VALUES (?)], undef, $source_name );
 my ( $source_id ) = $dbh->selectrow_array( q[SELECT id FROM source WHERE name = ?], undef, $source_name );
 
 my $sth = $dbh->prepare( q[INSERT INTO queue (domain, priority, source_id) VALUES (?,?,?)] );
-my $reg_ins = $dbh->prepare(q[INSERT INTO registry (domain, registrar, age, source_id) VALUES (?,?,?,?)]);
+my $reg_ins = $dbh->prepare(q[INSERT INTO registry (domain, registrar, age, source_id, registration_id) VALUES (?,?,?,?,?)]);
 
 if (defined $inputfile && -f $inputfile) {
     # Explicitly disable AutoCommit, to avoid commit after each line
@@ -45,9 +45,9 @@ if (defined $inputfile && -f $inputfile) {
     open(F, "<", "$inputfile") or die "Can't open given input file: $!\n";
     while(<F>) {
         chomp;
-        my ($domain, $reg_id, $age) = split /\|/;
+        my ($domain, $reg_id, $age, $registration_id) = split /\|/;
         $sth->execute($domain, $priority, $source_id);
-        $reg_ins->execute($domain, $reg_id, $age, $source_id);
+        $reg_ins->execute($domain, $reg_id, $age, $source_id, $registration_id);
         # Commit every 1000 inserts
         if ($. % 1000 == 0) {
             $dbh->commit;

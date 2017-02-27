@@ -117,7 +117,8 @@ CREATE TABLE IF NOT EXISTS `registry` (
     `domain` varchar(255) default NULL,
     `registrar` int(10) unsigned NOT NULL,
     `age` int(10) unsigned NOT NULL,
-    `source_id` int(10) unsigned NULL
+    `source_id` int(10) unsigned NULL,
+    `registration_id` int(10) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Source is supposed to be a list of all sources requesting tests.
