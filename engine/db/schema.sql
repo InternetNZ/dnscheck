@@ -110,6 +110,16 @@ CREATE TABLE IF NOT EXISTS `delegation_history` (
   UNIQUE KEY (`domain`,`nameserver`)
 ) ENGINE=InnoDB DEFAULT CHARSET=ascii;
 
+-- Registry is a table to keep track of the registry snapshot used to
+-- run an specific scan
+
+CREATE TABLE IF NOT EXISTS `registry` (
+    `domain` varchar(255) default NULL,
+    `registrar` int(10) unsigned NOT NULL,
+    `age` int(10) unsigned NOT NULL,
+    `source_id` int(10) unsigned NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 -- Source is supposed to be a list of all sources requesting tests.
 -- The recommended procedure is that a program that wants to add
 -- tests adds its name and possible some contact information to this table,
