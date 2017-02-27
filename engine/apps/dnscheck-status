@@ -1,0 +1,36 @@
+#!/usr/bin/env perl
+
+use 5.10.1;
+use strict;
+use warnings;
+
+use DNSCheck;
+use Getopt::Long;
+
+my $source_name = 'dnscheck-status';
+
+my $dc  = DNSCheck->new;
+my $dbh = $dc->dbh;
+
+if ( not $dbh ) {
+    say 'Failed to connect to database.';
+    exit( 1 );
+}
+
+# Get source id
+my ( $source_id ) = $dbh->selectrow_array( q[SELECT max(id) FROM source WHERE substr(name,1,8)='zonescan']);
+print "Zone Scan: $source_id\n";
+
+# Fetching the following elements
+# Number of elements in the queue
+my ( $queue_len ) = $dbh->selectrow_array( q[SELECT count(*) FROM queue WHERE source_id=?], undef, $source_id);
+print "Queue Length: $queue_len\n";
+
+# Number of domains in progress
+my ( $in_progress ) = $dbh->selectrow_array( q[SELECT count(*) FROM queue WHERE source_id=? AND inprogress is not NULL], undef, $source_id);
+print "In Progress: $in_progress\n";
+
+# Number of domains processed
+my ( $processed ) = $dbh->selectrow_array( q[SELECT count(*) FROM tests WHERE source_id=? AND `end` >= (now() - INTERVAL 30 MINUTE)], undef, $source_id);
+print "Processed: $processed\n";
+
