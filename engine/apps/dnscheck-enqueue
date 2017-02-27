@@ -48,9 +48,13 @@ if (defined $inputfile && -f $inputfile) {
         my ($domain, $reg_id, $age) = split /\|/;
         $sth->execute($domain, $priority, $source_id);
         $reg_ins->execute($domain, $reg_id, $age, $source_id);
-        # Commit every 100 inserts
-        $dbh->commit if ($. % 100 == 0);
+        # Commit every 1000 inserts
+        if ($. % 1000 == 0) {
+            $dbh->commit;
+            print "Loaded $. domains\r";
+        }
     }
+    print "\n";
     close F;
     $dbh->commit;
 }
