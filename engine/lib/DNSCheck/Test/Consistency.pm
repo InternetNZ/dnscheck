@@ -88,7 +88,7 @@ sub test {
 
             my $serial = $rr->serial;
 
-            my $digest = sha1_hex( join( ':', $rr->mname, $rr->rname, $rr->refresh, $rr->retry, $rr->expire, $rr->minimum ) );
+            my $digest = sha1_hex( join( ':', uc($rr->mname), uc($rr->rname), $rr->refresh, $rr->retry, $rr->expire, $rr->minimum ) );
 
             $logger->auto( "CONSISTENCY:SOA_SERIAL_AT_ADDRESS", $address, $serial );
             $logger->auto( "CONSISTENCY:SOA_DIGEST_AT_ADDRESS", $address, $digest );
@@ -144,7 +144,7 @@ sub test_nssets {
         foreach my $addr ( @addrs ) {
             my $p = $parent->dns->query_explicit( $zone, $qclass, 'NS', $addr );
             if ( $p ) {
-                my @nsset = sort map { $_->string } grep { $_->type eq 'NS' } $p->answer;
+                my @nsset = sort map { uc $_->string } grep { $_->type eq 'NS' } $p->answer;
                 my $tmp = join( '|', @nsset );
                 $logger->auto( 'CONSISTENCY:NS_SET_AT', $addr, $tmp );
                 $sets{$tmp} += 1;
@@ -189,6 +189,10 @@ The serial number of the zone must be the same at all listed name servers.
 Check that the SOA records retrieved from all nameservers for the zone contain
 the same information (that is, the same serial number and the same timeout
 values).
+
+=item ->test_nssets($zone)
+
+Checks that all child nameservers for the zone gives the same NS RRset.
 
 =back
 

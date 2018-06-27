@@ -409,6 +409,9 @@ messages:
   DNSSEC:ALGORITHM_UNASSIGNED:
     args: 1
     format: Algoritmus číslo %s je nepřiřazen.
+  DNSSEC:ALGORITHM_DEPRECATED:
+    args: 1
+    format: Algoritmus číslo %s je zastaralé.
   DNSSEC:BEGIN:
     args: 1
     format: Začíná testování DNSSEC pro %s.

@@ -5,29 +5,41 @@ use warnings;
 
 use Test::More;
 use lib "t/lib";
-use MockResolver 'soa';
+# use MockBootstrap 'logger';
+use MockResolver 'logger';
 use File::Temp 'tempfile';
 
 use_ok( 'DNSCheck' );
 my $dc = new_ok( 'DNSCheck' => [ { configdir => './t/config' } ] );
 $dc->config->{disable}{mail}{test} = 0;
 $dc->logger->set_filter( 'SOA:BEGIN', ['iis.se'], 'CRITICAL' );
-$dc->soa->test( 'iis.se' );
 
 my $log = $dc->logger;
+
+eval {
+    $log->callback('not a coderef');
+};
+like($@, qr[Attempted to set non-coderef as logging callback], 'Callback protection works');
+my $cb_counter = 0;
+$log->callback( sub {$cb_counter += 1});
+
+$dc->soa->test( 'iis.se' );
+
+is($cb_counter, 141, 'Callback ran expected number of times');
+
 isa_ok( $log,         'DNSCheck::Logger' );
 isa_ok( $log->locale, 'DNSCheck::Locale' );
 
 is( $log->count_critical, 1,   'Critical errors' );
 is( $log->count_error,    0,   'Errors' );
 is( $log->count_warning,  0,   'Warnings' );
-is( $log->count_notice,   0,   'Notices' );
-is( $log->count_info,     34,  'Informational messages' );
-is( $log->count_debug,    104, 'Debug messages' );
+is( $log->count_notice,   1,   'Notices' );
+is( $log->count_info,     33,  'Informational messages' );
+is( $log->count_debug,    106, 'Debug messages' );
 
 my $msg = $log->export;
 my $msg_hash = $log->export_hash;
-is( scalar( @$msg ), 139, 'Correct number of entries dumped from export' );
+is( scalar( @$msg ), 141, 'Correct number of entries dumped from export' );
 is(
     scalar( @$msg_hash ), scalar( @$msg ),
     'Same number of entries dumped from export_hash and export'
@@ -49,7 +61,7 @@ foreach my $obj (@$msg_hash) {
 
 my $count = 0;
 $count++ while ( $log->get_next_entry );
-is( $count, 139, 'Iterator saw all messages' );
+is( $count, 141, 'Iterator saw all messages' );
 
 {
     local *STDERR;
@@ -58,7 +70,7 @@ is( $count, 139, 'Iterator saw all messages' );
     $log->dump;
     STDERR->flush;
     my @lines = <$fh>;
-    is( scalar( @lines ), 139, 'dump printed correct number of lines' );
+    is( scalar( @lines ), 141, 'dump printed correct number of lines' );
     close( $fh );
     unlink( $filename );
 }
@@ -104,7 +116,7 @@ $dc->soa->test( 'iis.se' );
     $dc->logger->dump;
     STDERR->flush;
     my @lines = <$fh>;
-    is( scalar( @lines ), 79, 'dump printed correct number of lines' );
+    is( scalar( @lines ), 81, 'dump printed correct number of lines' );
     like( $lines[0], qr/gurksallad/, 'logname correct' );
     close( $fh );
     unlink( $filename );
@@ -127,5 +139,11 @@ $dc->soa->test( 'iis.se' );
     close( $fh );
     unlink( $filename );
 }
+
+$dc = new_ok( 'DNSCheck' => [ { configfile => './t/config/config_filter.yaml' } ] );
+$dc->soa->test('14.109.in-addr.arpa');
+my %modified = map {$_->{arg}[0] => $_->{level}} grep {$_->{tag} eq 'ADDRESS:BEGIN'} @{$dc->logger->export_hash};
+is($modified{'109.0.74.131'}, 'NOTICE', 'Filter-set level 1 OK');
+is($modified{'109.0.74.133'}, 'WARNING', 'Filter-set level 2 OK');
 
 done_testing();

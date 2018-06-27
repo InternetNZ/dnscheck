@@ -397,6 +397,9 @@ messages:
   DNSSEC:ALGORITHM_UNASSIGNED:
     args: 1
     format: Algoritme nummer %s is niet toegekend.
+  DNSSEC:ALGORITHM_DEPRECATED:
+    args: 1
+    format: Algoritme nummer %s is verouderd.
   DNSSEC:BEGIN:
     args: 1
     format: Begin van DNSSEC testen voor %s.

@@ -99,6 +99,9 @@ messages:
     args: 0
     descr: 'Samtliga DNS-servrar för zonen finns inom samma, (eller inget), autonoma system.'
     format: Zon annonserad av mindre än 2 IPv6 ASN.
+  CONNECTIVITY:RESERVED_AS:
+    args: 2
+    format: Zonen %s har en namnserver som annonseras av ett reserverat AS (%s).
   CONSISTENCY:BEGIN:
     args: 1
     format: Börjar testa att zonen är konsekvent uppsatt för %s.
@@ -185,6 +188,24 @@ messages:
   DELEGATION:MATCHING_GLUE:
     args: 2
     format: Kontrollerar glue för %s (%s).
+  DELEGATION:CHILD_GLUE_NOT_AUTH:
+    args: 2
+    format: "En namnserver för %s var inte auktorativ för zonen %s."
+  DELEGATION:CHILD_GLUE_CNAME:
+    args: 2
+    format: "För zonen %s var namnet %s ett CNAME-alias."
+  DELEGATION:CHILD_GLUE_DNAME:
+    args: 2
+    format: "För zonen %s var namnet %s ett DNAME-alias."
+  DELEGATION:GLUE_REFERRAL_FOLLOWED:
+    args: 2
+    format: "DNSCheck följde en hänvisning för att hitta %s address."
+  DELEGATION:GLUE_BROKEN_REFERRAL:
+    args: 2
+    format: "Det gick inte att följa hänvisningarna för %s."
+  DELEGATION:GLUE_ERROR_AT_CHILD:
+    args: 2
+    format: "Frågan om adressen %s resulterade i ett fel av typ %s."
   DELEGATION:NOT_FOUND_AT_CHILD:
     args: 0
     descr: Inga DNS-servrar hittades hos barnet. Det här betyder vanligtvis att barnet inte är konfigurerat att svara på frågor om zonen.
@@ -203,6 +224,12 @@ messages:
   DELEGATION:NO_NS_IPV6:
     args: 0
     format: Inga IPv6 DNS-servrar hittades.
+  DELEGATION:MIN_REFERRAL_SIZE_OK:
+    args: 1
+    format: "Det går att bygga ett hänvisningspaket för %s som fungerar även utan stöd för EDNS0."
+  DELEGATION:MIN_REFERRAL_SIZE_TOO_BIG:
+    args: 2
+    format: "Det minsta möjliga hänvisningspaket vi kunde bygga för %s var %s bytes, detta kräver EDNS0-stöd och kommer inte fungera för gamla resolvrar."
   DELEGATION:NS_AT_CHILD:
     args: 1
     descr: Detta är listan med DNS-servrar som är listade i barnzonen. Den måste innehålla samtliga DNS-servrar som är listade i föräldrazonen.
@@ -409,6 +436,9 @@ messages:
   DNSSEC:ALGORITHM_UNASSIGNED:
     args: 1
     format: Algoritm nummer %s är inte tilldelad.
+  DNSSEC:ALGORITHM_DEPRECATED:
+    args: 1
+    format: Algoritm nummer %s är deprecated.
   DNSSEC:BEGIN:
     args: 1
     format: Börjar testa DNSSEC för %s.
@@ -589,6 +619,33 @@ messages:
   DNSSEC:SOA_VALID_SIGNATURES:
     args: 1
     format: Tillräckligt med godkända signaturer över SOA RRset hittade för %s.
+  DNSSEC:NSEC3PARAM_FOUND:
+    args: 1
+    format: NSEC3PARAM-post för %s hittades.
+  DNSSEC:NSEC3_TOO_MANY_ITERATIONS:
+    args: 3
+    format: "NSEC för %s är satt att använda %s iterationer, detta är högre än den rekommenderade gränsen på %s."
+  DNSSEC:NSEC3_ITERATIONS_OK:
+    args: 3
+    format: "NSEC för %s är satt att använda %s iterationer, detta är mindre än den rekommendera gränsen därav OK."
+  DNSSEC:NSEC3PARAM_NOT_FOUND:
+    args: 1
+    format: NSECPARAM-post för %s hittades inte.
+  DNSSEC:NSEC_NOT_FOUND:
+    args: 1
+    format: "Validerande NSEC-poster för %s hittades inte."
+  DNSSEC:NSEC_FOUND:
+    args: 2
+    format: "Validerande NSEC-poster för %s hittades av typen %s."
+  DNSSEC:RRSIG_SHORT_DURATION:
+    args: 2
+    format: "Signaturslänged för %s är för kort (%s sekunder)."
+  DNSSEC:RRSIG_LONG_DURATION:
+    args: 2
+    format: "Signaturslivslängden för %s är för lång (%s sekunder)."
+  DNSSEC:RRSIG_OK_DURATION:
+    args: 2
+    format: "Signaturslivslängden för %s är OK (%s sekunder)."
   ENGINE:CRASH:
     args: 0
     format: DNSCheck-motorn kraschade.
@@ -608,6 +665,13 @@ messages:
     args: 1
     descr: 'Värdnamnet är ett alias (CNAME), vilket inte är tillåtet. Värdnamn måste publiceras med en A- eller AAAA-pekare.'
     format: Värdnamnet %s hänvisar till ett CNAME.
+  HOST:RESERVED_DOMAIN:
+    args: 2
+    format: Namnet %s ligger i den reserverade domänen %1.
+    descr: RFC6761 omnämner ett antal domänen som inte får finnas publikt på Internet.
+  HOST:DISCOURAGED_NAME:
+    args: 1
+    format: "Namnet %s rekommenderas att det inte används enligt RFC3696 eftersom dubbelminus kan komma att användas för tillägg till DNS-standarden i framtiden."
   HOST:END:
     args: 1
     format: Klar med test av värdnamnet %s.
@@ -704,6 +768,12 @@ messages:
     args: 3
     descr: 'DNS-servern svarar inte auktoritativt på anrop för den testade domänen. Det beror troligtvis på en felkonfigurering, vanligtvis så har DNS-servern inte ställts in för att agera server för den testade domänen.'
     format: DNS-servern %s (%s) är inte auktoritativ för %s.
+  NAMESERVER:NOT_AUTH_UDP:
+    args: 1
+    format: 'Namnservern %s svarar inte auktorativt över UDP.'
+  NAMESERVER:NOT_AUTH_TCP:
+    args: 1
+    format: 'Namnservern %s svarar inte auktorativt över TCP.'
   NAMESERVER:NOT_RECURSIVE:
     args: 2
     format: DNS-servern %s (%s) är inte rekursiv.
@@ -746,6 +816,9 @@ messages:
   NAMESERVER:UDP_OK:
     args: 3
     format: DNS-servern %s (%s) svarar på anrop via UDP.
+  NAMESERVER:DNSCURVE:
+    args: 1
+    format: Namnservern %s har en DNSCurve publik nyckel.
   NSTIME:AVERAGE:
     args: 7
     format: 'Zon %s, server %s: %s anrop, %sms medel, %sms min, %sms max, %sms standardavvikelse.'

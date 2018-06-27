@@ -20,8 +20,10 @@ net:
     # The following two records should be lists of DNS suffixes pointing to
     # cymru-style servers for looking up AS numbers for IP addresses. 
     v4root: 
+        - origin.asnlookup.iis.se
         - origin.asn.cymru.com
     v6root: 
+        - origin6.asnlookup.iis.se
         - origin6.asn.cymru.com
 
 syslog:

@@ -24,7 +24,7 @@ foreach my $m (qw[GLUE_FOUND_AT_PARENT MATCHING_GLUE NS_HISTORY ]) {
 $dc->logger->clear;
 
 # Not good zone
-($errors, $testable) = $dc->delegation->test('aflac.se');
+($errors, $testable) = $dc->delegation->test('bildarkiv.se');
 
 is( $errors, 1, "$errors error(s)");
 ok( !$testable, 'Zone is not testable');
@@ -59,6 +59,19 @@ ok( $testable, 'sig.se is testable');
 
 foreach my $m (qw[INCONSISTENT_GLUE]) {
     ok($tags{"DELEGATION:$m"}, "DELEGATION:$m");
+}
+$dc->logger->clear;
+
+# DNS05 bug
+
+($errors, $testable) = $dc->delegation->test('wiccainfo.se');
+ok($testable, 'testable');
+ok($errors == 0, 'no errors');
+%tags = map {$_->[3] => $_} @{$dc->logger->export};
+
+foreach my $m (qw[GLUE_SKIPPED]) {
+    ok($tags{"DELEGATION:$m"}, "DELEGATION:$m");
+    is($tags{'DELEGATION:GLUE_SKIPPED'}[7], 'out-of-zone', 'skipped for right reason');
 }
 $dc->logger->clear;
 
@@ -109,6 +122,6 @@ my %data = (
                                 '192.36.133.107'
                               ]
         );
-is($dc->delegation->min_packet_length('se', %data), 497, 'Minimum referral size');
+is($dc->delegation->min_packet_length('se', %data), 498, 'Minimum referral size');
 
 done_testing();

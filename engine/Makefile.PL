@@ -6,6 +6,22 @@ use utf8;
 
 use ExtUtils::MakeMaker;
 use File::ShareDir::Install;
+use version;
+
+# Protect against unusable versions of Net::DNS and Net::DNS::SEC
+my $ndv = eval { require Net::DNS; version->parse($Net::DNS::VERSION) };
+my $ndsv = eval { require Net::DNS::SEC; version->parse($Net::DNS::SEC::VERSION) };
+if ($ndv) {
+    print "Installed version of Net::DNS is $ndv, and Net::DNS::SEC is $ndsv.\n";
+    if ($ndv == version->parse(0.75) or $ndv == version->parse(0.76)) {
+        print "This Net::DNS version has severe problems and cannot be used. Please upgrade and try again.\n";
+        exit(1);
+    }
+    if ($ndsv == version->parse(0.18)) {
+        print "This Net::DNS::SEC version has severe problems and cannot be used. Please upgrade and try again.\n";
+        exit(1);
+    }
+}
 
 my @exefiles = ( 'apps/dnscheck-packetcheck', 'apps/dnscheck', 'apps/dnscheck-preflight', 'apps/dnscheck-dispatcher', 'apps/dnscheck-zonediff', 'apps/dnscheck-12hourmailer', 'apps/dnscheck-hostsyntax', 'apps/dnscheck-dnssecmailer', 'apps/dnscheck-enqueue');
 
@@ -24,8 +40,8 @@ WriteMakefile(
         'Digest::BubbleBabble'    => 0,
         'Digest::SHA'             => 0,
         'IO::Socket::INET6'       => 2.51,
-        'Net::DNS'                => 0.65,
-        'Net::DNS::SEC'           => 0.16,
+        'Net::DNS'                => 0.73,
+        'Net::DNS::SEC'           => 0.17,
         'Net::IP'                 => 1.25,
         'Socket6'                 => 0.19,
         'YAML'                    => 0,
@@ -40,7 +56,7 @@ WriteMakefile(
         'File::ShareDir'          => 0,
         'Config::Any'             => 0,
         'YAML::XS'                => 0,
-        'List::MoreUtils'         => 0,
+        'List::MoreUtils'         => 0.28,
     },
     'EXE_FILES' => \@exefiles,
     'NO_META'   => 1,

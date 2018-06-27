@@ -34,6 +34,16 @@ SKIP: {
     is($ht->host_syntax(undef), 0, 'Test string must be defined');
     is($ht->host_syntax('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.PGZASOFZNZKANGZSGXAUEPERRQROHXMYVAU.JYZIBFXSMYMMAZTFVQHLPZCLWMTNTAKLTHO.YLKNEZBLQXZTIBIOXRXPHKZTUAZCHUQATBS.OXKVHDXIWVJWGUCBUBSANSOKEDUPZIELFEG.WIZZTSNYERDWGGGOHWMJKQALIKUGDFMFGDA.CHUEZWRGUFQRZWJWWPGJHYWSMMCJXXJMLPJ.se.'), 0, 'Long name OK');
     is($ht->host_syntax('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.PGZASOFZNZKANGZSGXAUEPERRQROHXMYVAU.JYZIBFXSMYMMAZTFVQHLPZCLWMTNTAKLTHO.YLKNEZBLQXZTIBIOXRXPHKZTUAZCHUQATBS.OXKVHDXIWVJWGUCBUBSANSOKEDUPZIELFEG.WIZZTSNYERDWGGGOHWMJKQALIKUGDFMFGDA.CHUEZWRGUFQRZWJWWPGJHYWSMMCJXXJMLPJ.se.'), 1, 'Longer name not OK');
+
+    $ht->test_reserved('foobar.local');
+    ok( (grep {$_->[3] eq 'HOST:RESERVED_DOMAIN'} @{$ht->logger->export})==1, 'Reserved domain detected' );
+
+    $ht->logger->clear;
+    $ht->host_syntax('xn--foo.bar');
+    ok( (grep {$_->[3] eq 'HOST:DISCOURAGED_NAME'} @{$ht->logger->export})==0, 'No discouraged name detected' );
+
+    $ht->host_syntax('qq--foo.bar');
+    ok( (grep {$_->[3] eq 'HOST:DISCOURAGED_NAME'} @{$ht->logger->export})==1, 'Discouraged name detected' );
 }
 
 done_testing;

@@ -2,20 +2,23 @@ The contents of the webui directory need to be copied to the web server
 (php-enabled) root. The webui/public_html directory is the document root.
 
 * Set up the mysql database - see the schema.sql in the engine/db directory
-* The file webui/constants.php should exist and be readable by th
+* The file webui/config.php should exist and be readable by the
   webserver's user, containing something like:
-        define('DB_SERVER', 'localhost');
-        define('DB_PORT', 3306);
-        define('DB_NAME', 'dnscheckng');
-        define('DB_USER', 'dnscheck_gui');
-        define('DB_PASS', 'dnscheck_gui.password');
-* The mysql user, dnscheck_gui, needs the following privileges on the database:
-        GRANT USAGE ON *.* TO 'dnscheck_gui'@'localhost' IDENTIFIED BY 'dnscheck_gui.password';
-        GRANT SELECT ON `dnscheckng`.`results` TO 'dnscheck_gui'@'localhost';
-        GRANT SELECT, INSERT, UPDATE, DELETE ON `dnscheckng`.`queue` TO 'dnscheck_gui'@'localhost';
-        GRANT SELECT, INSERT, UPDATE ON `dnscheckng`.`source` TO 'dnscheck_gui'@'localhost';
-        GRANT SELECT ON `dnscheckng`.`tests` TO 'dnscheck_gui'@'localhost';
-        GRANT SELECT ON `dnscheckng`.`messages` TO 'dnscheck_gui'@'localhost';
+
+    $conf = array(
+        'db_server' => 'localhost',
+        'db_port' => 3306,
+        'db_name' => 'dnscheck',
+        'db_user' => 'dnscheck_webui',
+        'db_pass' => 'dnscheck',
+    );
+* The mysql user, dnscheck_webui, needs the following privileges on the database:
+        GRANT USAGE ON *.* TO 'dnscheck_webui'@'localhost' IDENTIFIED BY 'demo_pwd';
+        GRANT SELECT ON `dnscheck`.`results` TO 'dnscheck_webui'@'localhost';
+        GRANT SELECT, INSERT, UPDATE, DELETE ON `dnscheck`.`queue` TO 'dnscheck_webui'@'localhost';
+        GRANT SELECT, INSERT, UPDATE ON `dnscheck`.`source` TO 'dnscheck_webui'@'localhost';
+        GRANT SELECT ON `dnscheck`.`tests` TO 'dnscheck_webui'@'localhost';
+        GRANT SELECT ON `dnscheck`.`messages` TO 'dnscheck_webui'@'localhost';
 * Fill the messages table by using the locale2sql.pl script, e.g. in
   the engine/locale directory:
         $ perl ../util/locale2sql.pl en.yaml > messages.sql

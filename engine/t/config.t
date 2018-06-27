@@ -27,8 +27,8 @@ SKIP: {
     ok( ref( $conf )                  eq "DNSCheck::Config" );
     ok( ref( $conf->get( "net" ) )    eq "HASH" );
     ok( $conf->get( "hostname" )      eq hostname );
-    is( scalar(keys(%{$conf->{locale}{messages}})), 308, 'Messages are there');
-    is( scalar(keys(%{$conf->{loglevels}})), 226, 'Policy data is there');
+    is( scalar(keys(%{$conf->{locale}{messages}})), 298, 'Messages are there');
+    is( scalar(keys(%{$conf->{loglevels}})), 223, 'Policy data is there');
 }
 
 new_ok( 'DNSCheck::Config' => [ configdir => './t/config', sitedir => './t/config' ] );

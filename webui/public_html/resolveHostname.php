@@ -1,6 +1,7 @@
 <?php
-$nameservers = explode('|', $_POST['nameservers']);
-$hostname = $_POST['hostname'];
+$nameservers = filter_input( INPUT_POST, 'nameservers', FILTER_SANITIZE_STRING );
+$nameservers = explode( '|', $nameservers );
+$hostname = filter_input( INPUT_POST, 'hostname', FILTER_SANITIZE_STRING );
 
 // Pass through the existing nameservers and try to find this one
 $count = 0;

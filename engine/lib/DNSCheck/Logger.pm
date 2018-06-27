@@ -37,6 +37,8 @@ use utf8;
 
 use Time::HiRes qw(time);
 use DNSCheck::Locale;
+use Carp;
+use List::MoreUtils qw[all pairwise];
 
 ######################################################################
 
@@ -81,6 +83,19 @@ sub new {
     $self->{filters} = ( $config->get( 'filters' ) ) // {};
 
     return bless $self, $class;
+}
+
+sub callback {
+    my ($self, $cref) = @_;
+
+    if ($cref and not (ref($cref) and ref($cref) eq 'CODE') ) {
+        croak "Attempted to set non-coderef as logging callback";
+    }
+
+    my $previous = $self->{callback};
+    $self->{callback} = $cref;
+
+    return $previous;
 }
 
 sub parent {
@@ -159,6 +174,10 @@ sub add {
 
     push @{ $self->{messages} }, $entry;
 
+    if ($self->{callback}) {
+        $self->{callback}->($entry);
+    }
+
     if ( $self->{interactive} ) {
         $self->print();
         $self->{messages} = ();
@@ -169,21 +188,13 @@ sub add {
 
 sub check_filters {
     my ( $self, $normal_level, $tag, @args ) = @_;
+    no warnings 'uninitialized';
 
     if ( $self->{filters}{$tag} ) {
         foreach my $f_data ( @{ $self->{filters}{$tag} } ) {
-
             my @f_args = @{ $f_data->{args} };
-            my @s_args = splice( @args, 0, scalar( @f_args ) );
-
-            while ( @f_args ) {
-                my $f = shift( @f_args );
-                my $s = shift( @s_args );
-                if ( $f ne $s ) {
-                    return $normal_level;
-                }
-            }
-            return $f_data->{level};
+            my @s_args = @args[0..$#f_args];
+            return $f_data->{level} if all {$_} pairwise {$a eq $b} @f_args, @s_args;
         }
     }
 
@@ -384,6 +395,11 @@ Remove all filters for a given tag.
 =item check_filters($level, $tag, @args)
 
 Used internally to implement the filter functionality.
+
+=item callback($coderef)
+
+Set a coderef that will be called as a method every time a message is added, with the message as its argument. The message will be in the format
+internally used by the logger.
 
 =item ->clear();
 

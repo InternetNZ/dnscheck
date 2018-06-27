@@ -20,7 +20,7 @@ my $dns   = $check->dns;
 
 ######################################################################
 
-ok(!$dns->find_parent("6f3899904701b0ce2835d82493c0212babf875c7", "IN"));
+ok(!$dns->find_parent("citron.fromage.gobbledygook.6f3899904701b0ce2835d82493c0212babf875c7", "IN"));
 is($dns->find_parent("se",           "IN"), ".");
 is($dns->find_parent("iis.se",       "IN"), "se");
 is($dns->find_parent("narnia.pp.se", "IN"), "se");
@@ -30,5 +30,7 @@ is($dns->find_parent("tboerner.eu",  "IN"), "eu");
 
 is($dns->find_parent("pewc.se",      "IN"), "se");
 is($dns->find_parent("xtent.se",     "IN"), "se");
+
+is($dns->find_parent("arpa", "IN"), ".");
 
 done_testing;

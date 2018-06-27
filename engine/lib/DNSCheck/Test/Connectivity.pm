@@ -141,6 +141,13 @@ sub test_as_diversity {
         $total += 1;
     }
 
+    # Reserved ranges come from http://www.iana.org/assignments/as-numbers/as-numbers.xml
+    foreach my $asn (keys %count) {
+        if ( $asn == 0 or ($asn >= 64000 and $asn <= 131071) or ($asn >= 4200000000 and $asn <= 4294967295) ) {
+            $logger->auto( 'CONNECTIVITY:RESERVED_AS', $zone, $asn);
+        }
+    }
+
     if ( $total <= 1 or max( values %count ) == $total ) {
         return 1;    # Error, one AS announced for all prefixes
     }
@@ -207,6 +214,9 @@ A name server must be announced.
 =item *
 Domain name servers should live in more than one AS.
 
+=item *
+Messages are logged if any ASs on IANAs reserved list are found.
+
 =back
 
 =head1 METHODS
@@ -222,6 +232,10 @@ Test specifically for IPv4.
 =item ->test_v6($zonename)
 
 Test specifically for IPv6.
+
+=item ->test_as_diversity($zone, $ipversion)
+
+This is a method that implements the parts of AS diversity testing that is largely common between the IP protocol versions.
 
 =back
 

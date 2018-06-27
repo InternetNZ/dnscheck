@@ -105,6 +105,9 @@ messages:
     args: 0
     descr: "The zone's name servers are all located within the same, (or no), autonomous system."
     format: Zone announced by fewer than two IPv6 ASN.
+  CONNECTIVITY:RESERVED_AS:
+      args: 2
+      format: Zone %s has a nameserver announced from reserved AS %s.
   CONSISTENCY:BEGIN:
     args: 1
     format: Begin testing zone consistency for %s.
@@ -191,6 +194,24 @@ messages:
   DELEGATION:MATCHING_GLUE:
     args: 2
     format: Checking glue for %s (%s).
+  DELEGATION:CHILD_GLUE_NOT_AUTH:
+      args: 2
+      format: "A nameserver for %s was not authoritative for %s."
+  DELEGATION:CHILD_GLUE_CNAME:
+      args: 2
+      format: "For the zone %s, the name %s was a CNAME alias"
+  DELEGATION:CHILD_GLUE_DNAME:
+      args: 2
+      format: "For the zone %s, the name %s was a DNAME alias"
+  DELEGATION:GLUE_REFERRAL_FOLLOWED:
+      args: 2
+      format: "DNSCheck followed a referral to find the address of %s."
+  DELEGATION:GLUE_BROKEN_REFERRAL:
+      args: 2
+      format: "Following the referral chain for %s failed."
+  DELEGATION:GLUE_ERROR_AT_CHILD:
+      args: 2
+      format: "Asking for the address for %s resulted in an error of type %s."
   DELEGATION:NOT_FOUND_AT_CHILD:
     args: 0
     descr: No name servers could be found at the child. This usually means that the child is not configured to answer queries about the zone.
@@ -424,6 +445,9 @@ messages:
   DNSSEC:ALGORITHM_UNASSIGNED:
     args: 1
     format: Algorithm number %s is unassigned.
+  DNSSEC:ALGORITHM_DEPRECATED:
+    args: 1
+    format: Algorithm number %s is deprecated.
   DNSSEC:BEGIN:
     args: 1
     format: Begin testing DNSSEC for %s.
@@ -608,11 +632,11 @@ messages:
       args: 1
       format: NSEC3PARAM record found for %s.
   DNSSEC:NSEC3_TOO_MANY_ITERATIONS:
-      args: 2
-      format: "NSEC3 for %s is set to use %s iterations, which is too high."
+      args: 3
+      format: "NSEC3 for %s is set to use %s iterations, which is higher than the limit of %s."
   DNSSEC:NSEC3_ITERATIONS_OK:
-      args: 2
-      format: "NSEC3 for %s is set to use %s iterations, which is OK."
+      args: 3
+      format: "NSEC3 for %s is set to use %s iterations, which is less than %s and thus OK."
   DNSSEC:NSEC3PARAM_NOT_FOUND:
       args: 1
       format: NSEC3PARAM record was not found for %s.
@@ -657,6 +681,13 @@ messages:
     args: 2
     descr: 'The hostname is not syntactially correct according to RFC 952.  A common error is to begin the hostname with a non-letter (a-z) or use invalid characters (only a-z, 0-9 and - are allowed).'
     format: Host name %s is illegal (syntax error at %s)
+  HOST:RESERVED_DOMAIN:
+      args: 2
+      format: Name %s is in reserved domain %s.
+      descr: RFC 6761 specifies a number of domains which may not be used on the larger Internet.
+  HOST:DISCOURAGED_NAME:
+    args: 1
+    format: "The name %s is discouraged by RFC3696, since double-dashes may become extension syntax in the future."
   HOST:NOT_FOUND:
     args: 1
     descr: No IPv4 or IPv6 address was found for the host name.
@@ -833,6 +864,9 @@ messages:
   NAMESERVER:UDP_OK:
     args: 3
     format: Name server %s (%s) answers queries over UDP.
+  NAMESERVER:DNSCURVE:
+      args: 1
+      format: Nameserver name %s encodes a DNSCurve public key.
   NSTIME:AVERAGE:
     args: 7
     format: 'Zone %s, server %s: %s calls, %sms avg, %sms min, %sms max, %sms stddev.'

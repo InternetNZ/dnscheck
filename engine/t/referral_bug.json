@@ -1,0 +1,2145 @@
+{
+   "test" : {
+      "NS" : {
+         "IN" : {
+            "85.24.141.132" : {
+               "header" : {
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "ad" : 0,
+                  "rcode" : "NOERROR",
+                  "cd" : 0,
+                  "rd" : 0,
+                  "aa" : 1,
+                  "qr" : 1,
+                  "ra" : 1
+               },
+               "answer" : [
+                  "test 600 IN NS b.ns.nic.test.",
+                  "test 600 IN NS a.ns.nic.test."
+               ]
+            }
+         }
+      }
+   },
+   "b.ns.nic2.test" : {
+      "A" : {
+         "IN" : {
+            "85.24.141.132" : {
+               "additional" : [
+                  "a.ns.nic2.test 600 IN A 85.24.141.132"
+               ],
+               "authority" : [
+                  "ns.nic2.test 600 IN NS a.ns.nic2.test.",
+                  "ns.nic2.test 600 IN NS b.ns.nic2.test."
+               ],
+               "header" : {
+                  "ra" : 1,
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "rd" : 0,
+                  "qr" : 1,
+                  "aa" : 1,
+                  "rcode" : "NOERROR",
+                  "ad" : 0,
+                  "cd" : 0
+               },
+               "answer" : [
+                  "b.ns.nic2.test 600 IN A 85.24.141.132"
+               ]
+            }
+         }
+      }
+   },
+   "a.dns.nic.wien" : {
+      "AAAA" : {
+         "IN" : {
+            "193.170.61.4" : {
+               "header" : {
+                  "ra" : 0,
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "ad" : 0,
+                  "rcode" : "NOERROR",
+                  "cd" : 0,
+                  "rd" : 0,
+                  "qr" : 1,
+                  "aa" : 1
+               },
+               "answer" : [
+                  "a.dns.nic.wien 3600 IN AAAA 2001:678:20::15"
+               ],
+               "authority" : [
+                  "nic.wien 3600 IN NS sec2.rcode0.net.",
+                  "nic.wien 3600 IN NS sec1.rcode0.net."
+               ]
+            }
+         }
+      },
+      "A" : {
+         "IN" : {
+            "193.170.61.4" : {
+               "header" : {
+                  "ra" : 0,
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "cd" : 0,
+                  "ad" : 0,
+                  "rcode" : "NOERROR",
+                  "rd" : 0,
+                  "aa" : 1,
+                  "qr" : 1
+               },
+               "answer" : [
+                  "a.dns.nic.wien 3600 IN A 194.0.25.15"
+               ],
+               "authority" : [
+                  "nic.wien 3600 IN NS sec1.rcode0.net.",
+                  "nic.wien 3600 IN NS sec2.rcode0.net."
+               ]
+            }
+         }
+      }
+   },
+   "a.ns.nic3.test" : {
+      "A" : {
+         "IN" : {
+            "85.24.141.132" : {
+               "header" : {
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "cd" : 0,
+                  "rcode" : "SERVFAIL",
+                  "ad" : 0,
+                  "qr" : 1,
+                  "rd" : 0,
+                  "aa" : 0,
+                  "ra" : 1
+               }
+            }
+         }
+      }
+   },
+   "wien" : {
+      "NS" : {
+         "IN" : {
+            "193.170.61.4" : {
+               "additional" : [
+                  "a.dns.nic.wien 3600 IN A 194.0.25.15",
+                  "a.dns.nic.wien 3600 IN AAAA 2001:678:20::15",
+                  "b.dns.nic.wien 3600 IN A 193.170.61.4",
+                  "b.dns.nic.wien 3600 IN AAAA 2001:62a:a:2000::4",
+                  "c.dns.nic.wien 3600 IN A 193.170.187.4",
+                  "c.dns.nic.wien 3600 IN AAAA 2001:62a:a:3000::4"
+               ],
+               "header" : {
+                  "ra" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "aa" : 1,
+                  "qr" : 1,
+                  "rd" : 0,
+                  "rcode" : "NOERROR",
+                  "ad" : 0,
+                  "cd" : 0
+               },
+               "answer" : [
+                  "wien 14400 IN NS c.dns.nic.wien.",
+                  "wien 14400 IN NS b.dns.nic.wien.",
+                  "wien 14400 IN NS a.dns.nic.wien."
+               ]
+            }
+         }
+      }
+   },
+   "a.ns.nic.test" : {
+      "A" : {
+         "IN" : {
+            "2001:0500:002d:0000:0000:0000:0000:000d" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "ra" : 0,
+                  "cd" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "aa" : 1,
+                  "qr" : 1,
+                  "rd" : 0,
+                  "opcode" : "QUERY",
+                  "tc" : 0
+               }
+            },
+            "85.24.141.132" : {
+               "authority" : [
+                  "ns.nic.test 600 IN NS b.ns.nic.test.",
+                  "ns.nic.test 600 IN NS a.ns.nic.test."
+               ],
+               "header" : {
+                  "ra" : 1,
+                  "rcode" : "NOERROR",
+                  "ad" : 0,
+                  "cd" : 0,
+                  "qr" : 1,
+                  "aa" : 0,
+                  "rd" : 0,
+                  "opcode" : "QUERY",
+                  "tc" : 0
+               },
+               "additional" : [
+                  "a.ns.nic.test 600 IN A 85.24.141.132",
+                  "b.ns.nic.test 600 IN A 85.24.141.132"
+               ]
+            },
+            "192.36.148.17" : {
+               "header" : {
+                  "ra" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "aa" : 1,
+                  "qr" : 1,
+                  "rd" : 0,
+                  "cd" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "128.63.2.53" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "ra" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "cd" : 0,
+                  "qr" : 1,
+                  "rd" : 0,
+                  "aa" : 1,
+                  "opcode" : "QUERY",
+                  "tc" : 0
+               }
+            },
+            "2001:07fe:0000:0000:0000:0000:0000:0053" : {
+               "header" : {
+                  "ra" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "cd" : 0,
+                  "qr" : 1,
+                  "rd" : 0,
+                  "aa" : 1,
+                  "opcode" : "QUERY",
+                  "tc" : 0
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "128.8.10.90" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "cd" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "rd" : 0,
+                  "qr" : 1,
+                  "aa" : 1,
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "ra" : 0
+               }
+            },
+            "199.7.83.42" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "cd" : 0,
+                  "qr" : 1,
+                  "aa" : 1,
+                  "rd" : 0,
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "ra" : 0
+               }
+            },
+            "198.41.0.4" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "ra" : 0,
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "cd" : 0,
+                  "aa" : 1,
+                  "rd" : 0,
+                  "qr" : 1
+               }
+            },
+            "2001:0500:0001:0000:0000:0000:803f:0235" : {
+               "header" : {
+                  "qr" : 1,
+                  "aa" : 1,
+                  "rd" : 0,
+                  "ad" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "cd" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "ra" : 0
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "192.33.4.12" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "ra" : 0,
+                  "qr" : 1,
+                  "rd" : 0,
+                  "aa" : 1,
+                  "cd" : 0,
+                  "ad" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "tc" : 0,
+                  "opcode" : "QUERY"
+               }
+            },
+            "202.12.27.33" : {
+               "header" : {
+                  "ra" : 0,
+                  "aa" : 1,
+                  "qr" : 1,
+                  "rd" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "cd" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY"
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "192.58.128.30" : {
+               "header" : {
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "aa" : 1,
+                  "rd" : 0,
+                  "qr" : 1,
+                  "cd" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "ra" : 0
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "192.203.230.10" : {
+               "header" : {
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "aa" : 1,
+                  "rd" : 0,
+                  "qr" : 1,
+                  "cd" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "ra" : 0
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "2001:0503:0c27:0000:0000:0000:0002:0030" : {
+               "header" : {
+                  "cd" : 0,
+                  "ad" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "qr" : 1,
+                  "aa" : 1,
+                  "rd" : 0,
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "ra" : 0
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "2001:0dc3:0000:0000:0000:0000:0000:0035" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "ra" : 0,
+                  "qr" : 1,
+                  "aa" : 1,
+                  "rd" : 0,
+                  "cd" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY"
+               }
+            },
+            "2001:07fd:0000:0000:0000:0000:0000:0001" : {
+               "header" : {
+                  "ra" : 0,
+                  "aa" : 1,
+                  "rd" : 0,
+                  "qr" : 1,
+                  "cd" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY"
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "192.5.5.241" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "ra" : 0,
+                  "cd" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "rd" : 0,
+                  "aa" : 1,
+                  "qr" : 1,
+                  "opcode" : "QUERY",
+                  "tc" : 0
+               }
+            },
+            "192.112.36.4" : {
+               "header" : {
+                  "rd" : 0,
+                  "qr" : 1,
+                  "aa" : 1,
+                  "ad" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "cd" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "ra" : 0
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "193.0.14.129" : {
+               "header" : {
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "qr" : 1,
+                  "rd" : 0,
+                  "aa" : 1,
+                  "cd" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "ra" : 0
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "2001:0500:002f:0000:0000:0000:0000:000f" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "cd" : 0,
+                  "ad" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "qr" : 1,
+                  "aa" : 1,
+                  "rd" : 0,
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "ra" : 0
+               }
+            },
+            "2001:0503:ba3e:0000:0000:0000:0002:0030" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "ra" : 0,
+                  "ad" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "cd" : 0,
+                  "qr" : 1,
+                  "aa" : 1,
+                  "rd" : 0,
+                  "opcode" : "QUERY",
+                  "tc" : 0
+               }
+            },
+            "192.228.79.201" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "ra" : 0,
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "cd" : 0,
+                  "ad" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "rd" : 0,
+                  "qr" : 1,
+                  "aa" : 1
+               }
+            },
+            "2001:0500:0003:0000:0000:0000:0000:0042" : {
+               "header" : {
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "qr" : 1,
+                  "aa" : 1,
+                  "rd" : 0,
+                  "cd" : 0,
+                  "ad" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ra" : 0
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            }
+         }
+      },
+      "AAAA" : {
+         "IN" : {
+            "198.41.0.4" : {
+               "header" : {
+                  "ra" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "rd" : 0,
+                  "qr" : 1,
+                  "aa" : 1,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "cd" : 0
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "199.7.83.42" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "cd" : 0,
+                  "ad" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "aa" : 1,
+                  "qr" : 1,
+                  "rd" : 0,
+                  "ra" : 0
+               }
+            },
+            "128.8.10.90" : {
+               "header" : {
+                  "qr" : 1,
+                  "aa" : 1,
+                  "rd" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "cd" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "ra" : 0
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "128.63.2.53" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "ra" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "cd" : 0,
+                  "aa" : 1,
+                  "rd" : 0,
+                  "qr" : 1,
+                  "opcode" : "QUERY",
+                  "tc" : 0
+               }
+            },
+            "2001:07fe:0000:0000:0000:0000:0000:0053" : {
+               "header" : {
+                  "ra" : 0,
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "cd" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "aa" : 1,
+                  "qr" : 1,
+                  "rd" : 0
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "192.36.148.17" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "ra" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "qr" : 1,
+                  "aa" : 1,
+                  "rd" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "cd" : 0
+               }
+            },
+            "85.24.141.132" : {
+               "header" : {
+                  "aa" : 0,
+                  "rd" : 0,
+                  "qr" : 1,
+                  "cd" : 0,
+                  "rcode" : "NOERROR",
+                  "ad" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "ra" : 1
+               },
+               "authority" : [
+                  "ns.nic.test 600 IN NS b.ns.nic.test.",
+                  "ns.nic.test 600 IN NS a.ns.nic.test."
+               ],
+               "additional" : [
+                  "a.ns.nic.test 600 IN A 85.24.141.132",
+                  "b.ns.nic.test 600 IN A 85.24.141.132"
+               ]
+            },
+            "2001:0500:002d:0000:0000:0000:0000:000d" : {
+               "header" : {
+                  "cd" : 0,
+                  "ad" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "aa" : 1,
+                  "rd" : 0,
+                  "qr" : 1,
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "ra" : 0
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "192.228.79.201" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "ra" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "aa" : 1,
+                  "qr" : 1,
+                  "rd" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "cd" : 0
+               }
+            },
+            "2001:0500:0003:0000:0000:0000:0000:0042" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "ra" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "aa" : 1,
+                  "rd" : 0,
+                  "qr" : 1,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "cd" : 0
+               }
+            },
+            "193.0.14.129" : {
+               "header" : {
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "rd" : 0,
+                  "aa" : 1,
+                  "qr" : 1,
+                  "cd" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "ra" : 0
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "192.112.36.4" : {
+               "header" : {
+                  "ra" : 0,
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "cd" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "aa" : 1,
+                  "rd" : 0,
+                  "qr" : 1
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "2001:0500:002f:0000:0000:0000:0000:000f" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "aa" : 1,
+                  "rd" : 0,
+                  "qr" : 1,
+                  "cd" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "ra" : 0
+               }
+            },
+            "2001:0503:ba3e:0000:0000:0000:0002:0030" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "cd" : 0,
+                  "ad" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "qr" : 1,
+                  "aa" : 1,
+                  "rd" : 0,
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "ra" : 0
+               }
+            },
+            "2001:0dc3:0000:0000:0000:0000:0000:0035" : {
+               "header" : {
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "rd" : 0,
+                  "aa" : 1,
+                  "qr" : 1,
+                  "ad" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "cd" : 0,
+                  "ra" : 0
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "2001:0503:0c27:0000:0000:0000:0002:0030" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "ra" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "aa" : 1,
+                  "qr" : 1,
+                  "rd" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "cd" : 0
+               }
+            },
+            "192.5.5.241" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "cd" : 0,
+                  "qr" : 1,
+                  "aa" : 1,
+                  "rd" : 0,
+                  "ra" : 0
+               }
+            },
+            "2001:07fd:0000:0000:0000:0000:0000:0001" : {
+               "header" : {
+                  "ra" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "qr" : 1,
+                  "aa" : 1,
+                  "rd" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "cd" : 0
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "192.203.230.10" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "ad" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "cd" : 0,
+                  "rd" : 0,
+                  "qr" : 1,
+                  "aa" : 1,
+                  "ra" : 0
+               }
+            },
+            "192.58.128.30" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "qr" : 1,
+                  "rd" : 0,
+                  "aa" : 1,
+                  "cd" : 0,
+                  "ad" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ra" : 0
+               }
+            },
+            "202.12.27.33" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "ra" : 0,
+                  "cd" : 0,
+                  "ad" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "aa" : 1,
+                  "rd" : 0,
+                  "qr" : 1,
+                  "opcode" : "QUERY",
+                  "tc" : 0
+               }
+            },
+            "2001:0500:0001:0000:0000:0000:803f:0235" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "ra" : 0,
+                  "rd" : 0,
+                  "qr" : 1,
+                  "aa" : 1,
+                  "cd" : 0,
+                  "ad" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "tc" : 0,
+                  "opcode" : "QUERY"
+               }
+            },
+            "192.33.4.12" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "ad" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "cd" : 0,
+                  "aa" : 1,
+                  "qr" : 1,
+                  "rd" : 0,
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "ra" : 0
+               }
+            }
+         }
+      }
+   },
+   "iis.se" : {
+      "NS" : {
+         "IN" : {
+            "212.247.7.228" : {
+               "additional" : [
+                  "ns.nic.se 3600 IN A 212.247.7.228",
+                  "ns.nic.se 3600 IN AAAA 2a00:801:f0:53::53",
+                  "ns3.nic.se 60 IN A 212.247.8.152",
+                  "ns3.nic.se 60 IN AAAA 2a00:801:f0:211::152"
+               ],
+               "header" : {
+                  "ra" : 0,
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "ad" : 0,
+                  "rcode" : "NOERROR",
+                  "cd" : 0,
+                  "aa" : 1,
+                  "qr" : 1,
+                  "rd" : 0
+               },
+               "answer" : [
+                  "iis.se 3600 IN NS ns.nic.se.",
+                  "iis.se 3600 IN NS ns3.nic.se.",
+                  "iis.se 3600 IN NS i.ns.se."
+               ]
+            }
+         }
+      }
+   },
+   "b.dns.nic.wien" : {
+      "AAAA" : {
+         "IN" : {
+            "193.170.61.4" : {
+               "authority" : [
+                  "nic.wien 3600 IN NS sec1.rcode0.net.",
+                  "nic.wien 3600 IN NS sec2.rcode0.net."
+               ],
+               "header" : {
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "qr" : 1,
+                  "aa" : 1,
+                  "rd" : 0,
+                  "ad" : 0,
+                  "rcode" : "NOERROR",
+                  "cd" : 0,
+                  "ra" : 0
+               },
+               "answer" : [
+                  "b.dns.nic.wien 3600 IN AAAA 2001:62a:a:2000::4"
+               ]
+            }
+         }
+      },
+      "A" : {
+         "IN" : {
+            "193.170.61.4" : {
+               "answer" : [
+                  "b.dns.nic.wien 3600 IN A 193.170.61.4"
+               ],
+               "header" : {
+                  "qr" : 1,
+                  "aa" : 1,
+                  "rd" : 0,
+                  "ad" : 0,
+                  "rcode" : "NOERROR",
+                  "cd" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "ra" : 0
+               },
+               "authority" : [
+                  "nic.wien 3600 IN NS sec1.rcode0.net.",
+                  "nic.wien 3600 IN NS sec2.rcode0.net."
+               ]
+            }
+         }
+      }
+   },
+   "b.ns.nic.test" : {
+      "AAAA" : {
+         "IN" : {
+            "2001:07fe:0000:0000:0000:0000:0000:0053" : {
+               "header" : {
+                  "ra" : 0,
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "cd" : 0,
+                  "ad" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "qr" : 1,
+                  "aa" : 1,
+                  "rd" : 0
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "128.63.2.53" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "ra" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "aa" : 1,
+                  "qr" : 1,
+                  "rd" : 0,
+                  "cd" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0
+               }
+            },
+            "128.8.10.90" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "ad" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "cd" : 0,
+                  "qr" : 1,
+                  "rd" : 0,
+                  "aa" : 1,
+                  "ra" : 0
+               }
+            },
+            "199.7.83.42" : {
+               "header" : {
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "qr" : 1,
+                  "aa" : 1,
+                  "rd" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "cd" : 0,
+                  "ra" : 0
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "198.41.0.4" : {
+               "header" : {
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "aa" : 1,
+                  "qr" : 1,
+                  "rd" : 0,
+                  "ad" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "cd" : 0,
+                  "ra" : 0
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "2001:0500:002d:0000:0000:0000:0000:000d" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "rd" : 0,
+                  "aa" : 1,
+                  "qr" : 1,
+                  "cd" : 0,
+                  "ad" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "ra" : 0
+               }
+            },
+            "85.24.141.132" : {
+               "additional" : [
+                  "a.ns.nic.test 600 IN A 85.24.141.132",
+                  "b.ns.nic.test 600 IN A 85.24.141.132"
+               ],
+               "header" : {
+                  "rcode" : "NOERROR",
+                  "ad" : 0,
+                  "cd" : 0,
+                  "aa" : 0,
+                  "qr" : 1,
+                  "rd" : 0,
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "ra" : 1
+               },
+               "authority" : [
+                  "ns.nic.test 600 IN NS a.ns.nic.test.",
+                  "ns.nic.test 600 IN NS b.ns.nic.test."
+               ]
+            },
+            "192.36.148.17" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "ra" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "cd" : 0,
+                  "aa" : 1,
+                  "rd" : 0,
+                  "qr" : 1,
+                  "opcode" : "QUERY",
+                  "tc" : 0
+               }
+            },
+            "192.203.230.10" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "ra" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "aa" : 1,
+                  "qr" : 1,
+                  "rd" : 0,
+                  "cd" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0
+               }
+            },
+            "192.5.5.241" : {
+               "header" : {
+                  "ra" : 0,
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "ad" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "cd" : 0,
+                  "qr" : 1,
+                  "rd" : 0,
+                  "aa" : 1
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "2001:07fd:0000:0000:0000:0000:0000:0001" : {
+               "header" : {
+                  "ra" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "cd" : 0,
+                  "qr" : 1,
+                  "aa" : 1,
+                  "rd" : 0,
+                  "opcode" : "QUERY",
+                  "tc" : 0
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "2001:0503:0c27:0000:0000:0000:0002:0030" : {
+               "header" : {
+                  "ra" : 0,
+                  "aa" : 1,
+                  "rd" : 0,
+                  "qr" : 1,
+                  "cd" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY"
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "2001:0dc3:0000:0000:0000:0000:0000:0035" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "aa" : 1,
+                  "rd" : 0,
+                  "qr" : 1,
+                  "cd" : 0,
+                  "ad" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "ra" : 0
+               }
+            },
+            "2001:0500:002f:0000:0000:0000:0000:000f" : {
+               "header" : {
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "cd" : 0,
+                  "qr" : 1,
+                  "rd" : 0,
+                  "aa" : 1,
+                  "ra" : 0
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "2001:0503:ba3e:0000:0000:0000:0002:0030" : {
+               "header" : {
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "cd" : 0,
+                  "aa" : 1,
+                  "qr" : 1,
+                  "rd" : 0,
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "ra" : 0
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "192.112.36.4" : {
+               "header" : {
+                  "ra" : 0,
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "cd" : 0,
+                  "qr" : 1,
+                  "rd" : 0,
+                  "aa" : 1
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "193.0.14.129" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "cd" : 0,
+                  "qr" : 1,
+                  "aa" : 1,
+                  "rd" : 0,
+                  "ra" : 0
+               }
+            },
+            "2001:0500:0003:0000:0000:0000:0000:0042" : {
+               "header" : {
+                  "ra" : 0,
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "cd" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "rd" : 0,
+                  "aa" : 1,
+                  "qr" : 1
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "192.228.79.201" : {
+               "header" : {
+                  "ra" : 0,
+                  "rd" : 0,
+                  "aa" : 1,
+                  "qr" : 1,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "cd" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY"
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "192.33.4.12" : {
+               "header" : {
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "qr" : 1,
+                  "aa" : 1,
+                  "rd" : 0,
+                  "cd" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "ra" : 0
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "2001:0500:0001:0000:0000:0000:803f:0235" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "ad" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "cd" : 0,
+                  "qr" : 1,
+                  "rd" : 0,
+                  "aa" : 1,
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "ra" : 0
+               }
+            },
+            "202.12.27.33" : {
+               "header" : {
+                  "ra" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "aa" : 1,
+                  "rd" : 0,
+                  "qr" : 1,
+                  "ad" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "cd" : 0
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "192.58.128.30" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "ra" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "aa" : 1,
+                  "rd" : 0,
+                  "qr" : 1,
+                  "ad" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "cd" : 0
+               }
+            }
+         }
+      },
+      "A" : {
+         "IN" : {
+            "2001:0500:002f:0000:0000:0000:0000:000f" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "cd" : 0,
+                  "qr" : 1,
+                  "aa" : 1,
+                  "rd" : 0,
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "ra" : 0
+               }
+            },
+            "2001:0503:ba3e:0000:0000:0000:0002:0030" : {
+               "header" : {
+                  "ra" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "aa" : 1,
+                  "qr" : 1,
+                  "rd" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "cd" : 0
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "193.0.14.129" : {
+               "header" : {
+                  "ra" : 0,
+                  "cd" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "rd" : 0,
+                  "aa" : 1,
+                  "qr" : 1,
+                  "opcode" : "QUERY",
+                  "tc" : 0
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "192.112.36.4" : {
+               "header" : {
+                  "aa" : 1,
+                  "qr" : 1,
+                  "rd" : 0,
+                  "ad" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "cd" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "ra" : 0
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "2001:0500:0003:0000:0000:0000:0000:0042" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "ra" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "rd" : 0,
+                  "qr" : 1,
+                  "aa" : 1,
+                  "cd" : 0,
+                  "ad" : 0,
+                  "rcode" : "NXDOMAIN"
+               }
+            },
+            "192.228.79.201" : {
+               "header" : {
+                  "ra" : 0,
+                  "cd" : 0,
+                  "ad" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "aa" : 1,
+                  "qr" : 1,
+                  "rd" : 0,
+                  "opcode" : "QUERY",
+                  "tc" : 0
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "192.203.230.10" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "ra" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "qr" : 1,
+                  "aa" : 1,
+                  "rd" : 0,
+                  "ad" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "cd" : 0
+               }
+            },
+            "192.5.5.241" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "cd" : 0,
+                  "rd" : 0,
+                  "aa" : 1,
+                  "qr" : 1,
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "ra" : 0
+               }
+            },
+            "2001:07fd:0000:0000:0000:0000:0000:0001" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "ra" : 0,
+                  "qr" : 1,
+                  "aa" : 1,
+                  "rd" : 0,
+                  "cd" : 0,
+                  "ad" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "tc" : 0,
+                  "opcode" : "QUERY"
+               }
+            },
+            "2001:0503:0c27:0000:0000:0000:0002:0030" : {
+               "header" : {
+                  "ra" : 0,
+                  "aa" : 1,
+                  "qr" : 1,
+                  "rd" : 0,
+                  "ad" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "cd" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY"
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "2001:0dc3:0000:0000:0000:0000:0000:0035" : {
+               "header" : {
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "qr" : 1,
+                  "aa" : 1,
+                  "rd" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "cd" : 0,
+                  "ra" : 0
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "192.58.128.30" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "cd" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "aa" : 1,
+                  "qr" : 1,
+                  "rd" : 0,
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "ra" : 0
+               }
+            },
+            "192.33.4.12" : {
+               "header" : {
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "ad" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "cd" : 0,
+                  "aa" : 1,
+                  "qr" : 1,
+                  "rd" : 0,
+                  "ra" : 0
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "2001:0500:0001:0000:0000:0000:803f:0235" : {
+               "header" : {
+                  "ra" : 0,
+                  "cd" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "rd" : 0,
+                  "qr" : 1,
+                  "aa" : 1,
+                  "opcode" : "QUERY",
+                  "tc" : 0
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "202.12.27.33" : {
+               "header" : {
+                  "ra" : 0,
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "cd" : 0,
+                  "aa" : 1,
+                  "rd" : 0,
+                  "qr" : 1
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "199.7.83.42" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "aa" : 1,
+                  "qr" : 1,
+                  "rd" : 0,
+                  "cd" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "ra" : 0
+               }
+            },
+            "198.41.0.4" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "ra" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "qr" : 1,
+                  "aa" : 1,
+                  "rd" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "cd" : 0
+               }
+            },
+            "2001:07fe:0000:0000:0000:0000:0000:0053" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "rd" : 0,
+                  "aa" : 1,
+                  "qr" : 1,
+                  "cd" : 0,
+                  "ad" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "ra" : 0
+               }
+            },
+            "128.63.2.53" : {
+               "header" : {
+                  "ad" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "cd" : 0,
+                  "qr" : 1,
+                  "aa" : 1,
+                  "rd" : 0,
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "ra" : 0
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "128.8.10.90" : {
+               "header" : {
+                  "rd" : 0,
+                  "qr" : 1,
+                  "aa" : 1,
+                  "cd" : 0,
+                  "ad" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "ra" : 0
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "192.36.148.17" : {
+               "header" : {
+                  "ra" : 0,
+                  "aa" : 1,
+                  "rd" : 0,
+                  "qr" : 1,
+                  "ad" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "cd" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY"
+               },
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ]
+            },
+            "2001:0500:002d:0000:0000:0000:0000:000d" : {
+               "authority" : [
+                  ". 86400 IN SOA a.root-servers.net. nstld.verisign-grs.com. (\n\t\t\t\t2014010901\t;serial\n\t\t\t\t1800      \t;refresh\n\t\t\t\t900       \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t86400  )\t;minimum"
+               ],
+               "header" : {
+                  "ad" : 0,
+                  "rcode" : "NXDOMAIN",
+                  "cd" : 0,
+                  "aa" : 1,
+                  "qr" : 1,
+                  "rd" : 0,
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "ra" : 0
+               }
+            },
+            "85.24.141.132" : {
+               "header" : {
+                  "ra" : 1,
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "rcode" : "NOERROR",
+                  "ad" : 0,
+                  "cd" : 0,
+                  "aa" : 0,
+                  "rd" : 0,
+                  "qr" : 1
+               },
+               "authority" : [
+                  "ns.nic.test 600 IN NS a.ns.nic.test.",
+                  "ns.nic.test 600 IN NS b.ns.nic.test."
+               ],
+               "additional" : [
+                  "b.ns.nic.test 600 IN A 85.24.141.132",
+                  "a.ns.nic.test 600 IN A 85.24.141.132"
+               ]
+            }
+         }
+      }
+   },
+   "i.ns.se" : {
+      "A" : {
+         "IN" : {
+            "194.146.106.22" : {
+               "additional" : [
+                  "a.ns.se 172800 IN A 192.36.144.107",
+                  "a.ns.se 172800 IN AAAA 2a01:3f0:0:301::53",
+                  "b.ns.se 172800 IN A 192.36.133.107",
+                  "b.ns.se 172800 IN AAAA 2001:67c:254c:301::53",
+                  "c.ns.se 172800 IN A 192.36.135.107",
+                  "c.ns.se 172800 IN AAAA 2001:67c:2554:301::53",
+                  "d.ns.se 172800 IN A 81.228.8.16",
+                  "e.ns.se 172800 IN A 81.228.10.57",
+                  "f.ns.se 172800 IN A 192.71.53.53",
+                  "f.ns.se 172800 IN AAAA 2a01:3f0:0:305::53",
+                  "g.ns.se 172800 IN A 130.239.5.114",
+                  "g.ns.se 172800 IN AAAA 2001:6b0:e:3::1",
+                  "i.ns.se 172800 IN AAAA 2001:67c:1010:5::53",
+                  "j.ns.se 172800 IN A 199.254.63.1",
+                  "j.ns.se 172800 IN AAAA 2001:500:2c::1"
+               ],
+               "header" : {
+                  "ra" : 0,
+                  "aa" : 1,
+                  "qr" : 1,
+                  "rd" : 0,
+                  "rcode" : "NOERROR",
+                  "ad" : 0,
+                  "cd" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY"
+               },
+               "answer" : [
+                  "i.ns.se 172800 IN A 194.146.106.22"
+               ],
+               "authority" : [
+                  "se 172800 IN NS i.ns.se.",
+                  "se 172800 IN NS e.ns.se.",
+                  "se 172800 IN NS g.ns.se.",
+                  "se 172800 IN NS d.ns.se.",
+                  "se 172800 IN NS j.ns.se.",
+                  "se 172800 IN NS b.ns.se.",
+                  "se 172800 IN NS c.ns.se.",
+                  "se 172800 IN NS a.ns.se.",
+                  "se 172800 IN NS f.ns.se."
+               ]
+            },
+            "212.247.7.228" : {
+               "header" : {
+                  "aa" : 0,
+                  "qr" : 1,
+                  "rd" : 0,
+                  "ad" : 0,
+                  "rcode" : "REFUSED",
+                  "cd" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "ra" : 0
+               }
+            }
+         }
+      },
+      "AAAA" : {
+         "IN" : {
+            "212.247.7.228" : {
+               "header" : {
+                  "ra" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "rd" : 0,
+                  "qr" : 1,
+                  "aa" : 0,
+                  "ad" : 0,
+                  "rcode" : "REFUSED",
+                  "cd" : 0
+               }
+            },
+            "194.146.106.22" : {
+               "additional" : [
+                  "a.ns.se 172800 IN A 192.36.144.107",
+                  "a.ns.se 172800 IN AAAA 2a01:3f0:0:301::53",
+                  "b.ns.se 172800 IN A 192.36.133.107",
+                  "b.ns.se 172800 IN AAAA 2001:67c:254c:301::53",
+                  "c.ns.se 172800 IN A 192.36.135.107",
+                  "c.ns.se 172800 IN AAAA 2001:67c:2554:301::53",
+                  "d.ns.se 172800 IN A 81.228.8.16",
+                  "e.ns.se 172800 IN A 81.228.10.57",
+                  "f.ns.se 172800 IN A 192.71.53.53",
+                  "f.ns.se 172800 IN AAAA 2a01:3f0:0:305::53",
+                  "g.ns.se 172800 IN A 130.239.5.114",
+                  "g.ns.se 172800 IN AAAA 2001:6b0:e:3::1",
+                  "i.ns.se 172800 IN A 194.146.106.22",
+                  "j.ns.se 172800 IN A 199.254.63.1",
+                  "j.ns.se 172800 IN AAAA 2001:500:2c::1"
+               ],
+               "authority" : [
+                  "se 172800 IN NS j.ns.se.",
+                  "se 172800 IN NS c.ns.se.",
+                  "se 172800 IN NS d.ns.se.",
+                  "se 172800 IN NS a.ns.se.",
+                  "se 172800 IN NS f.ns.se.",
+                  "se 172800 IN NS e.ns.se.",
+                  "se 172800 IN NS b.ns.se.",
+                  "se 172800 IN NS i.ns.se.",
+                  "se 172800 IN NS g.ns.se."
+               ],
+               "header" : {
+                  "cd" : 0,
+                  "rcode" : "NOERROR",
+                  "ad" : 0,
+                  "rd" : 0,
+                  "aa" : 1,
+                  "qr" : 1,
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "ra" : 0
+               },
+               "answer" : [
+                  "i.ns.se 172800 IN AAAA 2001:67c:1010:5::53"
+               ]
+            }
+         }
+      }
+   },
+   "ns3.nic.se" : {
+      "A" : {
+         "IN" : {
+            "212.247.7.228" : {
+               "authority" : [
+                  "nic.se 3600 IN NS ns.nic.se.",
+                  "nic.se 3600 IN NS i.ns.se.",
+                  "nic.se 3600 IN NS ns3.nic.se."
+               ],
+               "header" : {
+                  "ra" : 0,
+                  "qr" : 1,
+                  "aa" : 1,
+                  "rd" : 0,
+                  "ad" : 0,
+                  "rcode" : "NOERROR",
+                  "cd" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY"
+               },
+               "answer" : [
+                  "ns3.nic.se 60 IN A 212.247.8.152"
+               ],
+               "additional" : [
+                  "ns.nic.se 3600 IN A 212.247.7.228",
+                  "ns.nic.se 3600 IN AAAA 2a00:801:f0:53::53",
+                  "ns3.nic.se 60 IN AAAA 2a00:801:f0:211::152"
+               ]
+            }
+         }
+      },
+      "AAAA" : {
+         "IN" : {
+            "212.247.7.228" : {
+               "additional" : [
+                  "ns.nic.se 3600 IN A 212.247.7.228",
+                  "ns.nic.se 3600 IN AAAA 2a00:801:f0:53::53",
+                  "ns3.nic.se 60 IN A 212.247.8.152"
+               ],
+               "authority" : [
+                  "nic.se 3600 IN NS i.ns.se.",
+                  "nic.se 3600 IN NS ns3.nic.se.",
+                  "nic.se 3600 IN NS ns.nic.se."
+               ],
+               "header" : {
+                  "ra" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "aa" : 1,
+                  "rd" : 0,
+                  "qr" : 1,
+                  "cd" : 0,
+                  "rcode" : "NOERROR",
+                  "ad" : 0
+               },
+               "answer" : [
+                  "ns3.nic.se 60 IN AAAA 2a00:801:f0:211::152"
+               ]
+            }
+         }
+      }
+   },
+   "a.ns.nic4.test" : {
+      "A" : {
+         "IN" : {
+            "85.24.141.132" : {
+               "additional" : [
+                  "bb.ns.nic4.test 600 IN A 85.24.141.132"
+               ],
+               "authority" : [
+                  "ns.nic4.test 600 IN NS bb.ns.nic4.test.",
+                  "ns.nic4.test 600 IN NS aa.ns.nic4.test."
+               ],
+               "header" : {
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "qr" : 1,
+                  "rd" : 0,
+                  "aa" : 1,
+                  "cd" : 0,
+                  "rcode" : "NOERROR",
+                  "ad" : 0,
+                  "ra" : 1
+               },
+               "answer" : [
+                  "a.ns.nic4.test 600 IN CNAME aa.ns.nic4.test.",
+                  "aa.ns.nic4.test 600 IN A 85.24.141.132"
+               ]
+            }
+         }
+      }
+   },
+   "c.dns.nic.wien" : {
+      "AAAA" : {
+         "IN" : {
+            "193.170.61.4" : {
+               "header" : {
+                  "aa" : 1,
+                  "qr" : 1,
+                  "rd" : 0,
+                  "ad" : 0,
+                  "rcode" : "NOERROR",
+                  "cd" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "ra" : 0
+               },
+               "answer" : [
+                  "c.dns.nic.wien 3600 IN AAAA 2001:62a:a:3000::4"
+               ],
+               "authority" : [
+                  "nic.wien 3600 IN NS sec1.rcode0.net.",
+                  "nic.wien 3600 IN NS sec2.rcode0.net."
+               ]
+            }
+         }
+      },
+      "A" : {
+         "IN" : {
+            "193.170.61.4" : {
+               "header" : {
+                  "ra" : 0,
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "cd" : 0,
+                  "ad" : 0,
+                  "rcode" : "NOERROR",
+                  "aa" : 1,
+                  "qr" : 1,
+                  "rd" : 0
+               },
+               "answer" : [
+                  "c.dns.nic.wien 3600 IN A 193.170.187.4"
+               ],
+               "authority" : [
+                  "nic.wien 3600 IN NS sec2.rcode0.net.",
+                  "nic.wien 3600 IN NS sec1.rcode0.net."
+               ]
+            }
+         }
+      }
+   },
+   "ns.nic.se" : {
+      "A" : {
+         "IN" : {
+            "212.247.7.228" : {
+               "header" : {
+                  "ra" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "aa" : 1,
+                  "qr" : 1,
+                  "rd" : 0,
+                  "cd" : 0,
+                  "ad" : 0,
+                  "rcode" : "NOERROR"
+               },
+               "answer" : [
+                  "ns.nic.se 3600 IN A 212.247.7.228"
+               ],
+               "authority" : [
+                  "nic.se 3600 IN NS i.ns.se.",
+                  "nic.se 3600 IN NS ns.nic.se.",
+                  "nic.se 3600 IN NS ns3.nic.se."
+               ],
+               "additional" : [
+                  "ns.nic.se 3600 IN AAAA 2a00:801:f0:53::53",
+                  "ns3.nic.se 60 IN A 212.247.8.152",
+                  "ns3.nic.se 60 IN AAAA 2a00:801:f0:211::152"
+               ]
+            }
+         }
+      },
+      "AAAA" : {
+         "IN" : {
+            "212.247.7.228" : {
+               "additional" : [
+                  "ns.nic.se 3600 IN A 212.247.7.228",
+                  "ns3.nic.se 60 IN A 212.247.8.152",
+                  "ns3.nic.se 60 IN AAAA 2a00:801:f0:211::152"
+               ],
+               "header" : {
+                  "qr" : 1,
+                  "rd" : 0,
+                  "aa" : 1,
+                  "rcode" : "NOERROR",
+                  "ad" : 0,
+                  "cd" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "ra" : 0
+               },
+               "answer" : [
+                  "ns.nic.se 3600 IN AAAA 2a00:801:f0:53::53"
+               ],
+               "authority" : [
+                  "nic.se 3600 IN NS ns3.nic.se.",
+                  "nic.se 3600 IN NS i.ns.se.",
+                  "nic.se 3600 IN NS ns.nic.se."
+               ]
+            }
+         }
+      }
+   },
+   "b.ns.nic4.test" : {
+      "A" : {
+         "IN" : {
+            "85.24.141.132" : {
+               "authority" : [
+                  "ns.nic4.test 600 IN SOA ns2.rayceem.com. rayceem.rayceem.com. (\n\t\t\t\t2013092602\t;serial\n\t\t\t\t10800     \t;refresh\n\t\t\t\t3600      \t;retry\n\t\t\t\t604800    \t;expire\n\t\t\t\t3600   )\t;minimum"
+               ],
+               "header" : {
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "rd" : 0,
+                  "qr" : 1,
+                  "aa" : 1,
+                  "rcode" : "NXDOMAIN",
+                  "ad" : 0,
+                  "cd" : 0,
+                  "ra" : 1
+               }
+            }
+         }
+      }
+   },
+   "b.ns.nic3.test" : {
+      "A" : {
+         "IN" : {
+            "85.24.141.132" : {
+               "header" : {
+                  "aa" : 0,
+                  "rd" : 0,
+                  "qr" : 1,
+                  "ad" : 0,
+                  "rcode" : "SERVFAIL",
+                  "cd" : 0,
+                  "tc" : 0,
+                  "opcode" : "QUERY",
+                  "ra" : 1
+               }
+            }
+         }
+      }
+   },
+   "a.ns.nic2.test" : {
+      "A" : {
+         "IN" : {
+            "85.24.141.132" : {
+               "additional" : [
+                  "b.ns.nic2.test 600 IN A 85.24.141.132"
+               ],
+               "answer" : [
+                  "a.ns.nic2.test 600 IN A 85.24.141.132"
+               ],
+               "header" : {
+                  "ra" : 1,
+                  "opcode" : "QUERY",
+                  "tc" : 0,
+                  "cd" : 0,
+                  "ad" : 0,
+                  "rcode" : "NOERROR",
+                  "rd" : 0,
+                  "aa" : 1,
+                  "qr" : 1
+               },
+               "authority" : [
+                  "ns.nic2.test 600 IN NS a.ns.nic2.test.",
+                  "ns.nic2.test 600 IN NS b.ns.nic2.test."
+               ]
+            }
+         }
+      }
+   }
+}

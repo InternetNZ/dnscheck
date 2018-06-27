@@ -754,6 +754,10 @@ for use as an object cache.
 
 Add fake glue for an undelegated test.
 
+=item ->add_fake_ds()
+
+Add a fake DS record for en undelegated test.
+
 =item ->cache()
 
 Return a reference to the object's name cache.
@@ -777,6 +781,10 @@ These four methods simply proxy to the underlying resolver object.
 =item ->fake_ns_packet()
 
 Create an artificial response packet to an NS query.
+
+=item ->fake_ds_packet()
+
+Create an artificial response packet to a DS query.
 
 =item ->fake_packet()
 
@@ -832,6 +840,10 @@ These three are the same as in all other DNSCheck classes.
 
 Return a reference to the nested hash structure holding nameserver response 
 time data.
+
+=item ->trace($domain)
+
+Return a list describing the recursion chain that led from the root to the given domain.
 
 =back
 

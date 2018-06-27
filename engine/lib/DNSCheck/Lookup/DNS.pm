@@ -686,6 +686,10 @@ sub _find_parent_helper {
 
     $self->logger->auto( "DNS:FIND_PARENT_BEGIN", $qname, $qclass );
 
+    if (index($qname, '.') == -1) { # If there is no dot in the name, the parent must be root
+        return '.';
+    }
+
     my ( $first, $second ) = $self->{resolver}->trace( $qname );
     if ( $first ) {
         if ( $first eq $qname or $first . '.' eq $qname ) {
@@ -1250,6 +1254,8 @@ Send a query to the default resolver(s). This will be a L<DNSCheck::Lookup::Reso
 =item my @addresses = $dns->find_addresses(I<qname>, I<qclass>);
 
 =item my $bool = $dns->address_is_authoritative(I<address>, I<qname>, I<qtype>);
+
+=item my $bool = $dns->address_is_authoritative_tcp(I<address>, I<qname>, I<qtype>);
 
 =item my $bool = $dns->address_is_recursive(I<address>, I<qclass>);
 

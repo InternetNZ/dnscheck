@@ -37,6 +37,42 @@ use utf8;
 
 use base 'DNSCheck::Test::Common';
 
+# Source:
+# https://www.iana.org/assignments/special-use-domain-names/special-use-domain-names.xml
+my @reserved = qw[
+  10.in-addr.arpa
+  16.172.in-addr.arpa
+  168.192.in-addr.arpa
+  17.172.in-addr.arpa
+  18.172.in-addr.arpa
+  19.172.in-addr.arpa
+  20.172.in-addr.arpa
+  21.172.in-addr.arpa
+  22.172.in-addr.arpa
+  23.172.in-addr.arpa
+  24.172.in-addr.arpa
+  25.172.in-addr.arpa
+  254.169.in-addr.arpa
+  26.172.in-addr.arpa
+  27.172.in-addr.arpa
+  28.172.in-addr.arpa
+  29.172.in-addr.arpa
+  30.172.in-addr.arpa
+  31.172.in-addr.arpa
+  8.e.f.ip6.arpa
+  9.e.f.ip6.arpa
+  a.e.f.ip6.arpa
+  b.e.f.ip6.arpa
+  example
+  example.com
+  example.net
+  example.org
+  invalid
+  local
+  localhost
+  test
+];
+
 ######################################################################
 
 sub test {
@@ -55,6 +91,8 @@ sub test {
 
     $errors += $self->host_syntax( $hostname );
     goto DONE if $errors > 0;
+
+    $errors += $self->test_reserved( $hostname );
 
     my $ipv4 = $parent->dns->query_resolver( $hostname, $qclass, "A" );
     my $ipv6 = $parent->dns->query_resolver( $hostname, $qclass, "AAAA" );
@@ -75,7 +113,6 @@ sub test {
     foreach my $rr ( @answers ) {
         if ( $rr->type eq "CNAME" ) {
             $errors += $logger->auto( "HOST:CNAME_FOUND", $hostname );
-            goto DONE;
         }
     }
 
@@ -84,7 +121,6 @@ sub test {
         if ( $rr->type eq "A" or $rr->type eq "AAAA" ) {
             if ( my $tmp = $parent->address->test( $rr->address ) ) {
                 $errors += $tmp;
-                goto DONE;
             }
         }
     }
@@ -142,7 +178,28 @@ sub host_syntax {
         return $self->logger->auto( "HOST:ILLEGAL_NAME", $hostname, "Top all-numeric" );
     }
 
+    foreach my $label (@labels) {
+        if ($label =~ /^[^x][^n]\-\-/) {
+            return $self->logger->auto( 'HOST:DISCOURAGED_NAME', $hostname )
+        }
+    }
+
+
     return 0;
+}
+
+sub test_reserved {
+    my ( $self, $name ) = @_;
+    my $errors = 0;
+
+    $name =~ s/\.$//;
+    foreach my $domain ( @reserved ) {
+        if ( $name =~ /(^|\.)$domain$/i ) {
+            $errors += $self->logger->auto( 'HOST:RESERVED_DOMAIN', $name, $domain );
+        }
+    }
+
+    return $errors;
 }
 
 1;
@@ -175,6 +232,9 @@ Hostname must nu point to a CNAME.
 =item *
 All host addresses (IPv4 and IPv6) must be valid.
 
+=item *
+Name must not be in a domain reserved by IANA.
+
 =back
 
 =head1 METHODS
@@ -182,6 +242,8 @@ All host addresses (IPv4 and IPv6) must be valid.
 =head2 test(I<hostname>);
 
 =head2 host_syntax(I<hostname>);
+
+=head2 test_reserved(I<hostname>);
 
 =head1 EXAMPLES
 

@@ -257,20 +257,52 @@ you're doing. As an example, the following would disable all DNSSEC tests:
 All test methods mentioned in the documentation for the respective modules are
 possible to disable this way.
 
+=head4 Filter rules
+
 It is also possible to set log message filters in the config file (see
 L<DNSCheck::Logger> for more about filters). The format for this is a hash of
 lists of hashes, all under the top-level key C<filters>, so the syntax gets a
 bit convoluted. Here is an example:
 
-   filters:
-       'SOA:BEGIN':
-           -
-               args:
-                   - iis.se
-               level: 'WARNING'
+    filters:
+      'NAMESERVER:NOT_AUTH':
+        - args:
+            - 'ns.ripe.net'
+            - '193.0.9.6'
+          level: 'WARNING'
+      'DNS:SOA_SERVFAIL':
+        - args:
+            - '193.0.9.6'
+          level: 'NOTICE'
+        - args:
+            - '2001:67c:e0:0:0:0:0:6'
+          level: 'WARNING'
 
-This adds a filter that sets the log level of a SOA:BEGIN message for the C<iis.se>
-domain to WARNING. 
+Under the "filters" key, there is a hash. The keys of this hash are DNSCheck message tags. In the example, C<NAMESERVER:NOT_AUTH> and
+C<DNS:SOA_SERVFAIL>. Under those keys are lists of rules. Each rule consists of a hash with two keys, C<args> and C<level>. Args holds a list of
+values, all of which must be string-wise equal to the arguments of the incoming message for the rule to apply. Level must be one of the strings
+C<CRITICAL>, C<ERROR>, C<WARNING>, C<NOTICE>, C<INFO> or C<DEBUG>.
+
+So the example above has three rules:
+
+=over
+
+=item 1
+
+Any message with the tag C<NAMESERVER:NOT_AUTH> where the first two arguments are C<ns.ripe.net> and C<193.0.9.6> has its level set to C<WARNING>.
+
+=item 2
+
+Any message with the tag C<DNS:SOA_SERVFAIL> where the first argument is C<193.0.9.6> has its level set to C<NOTICE>.
+
+=item 3
+
+Any message with the tag C<DNS:SOA_SERVFAIL> where the first argument is C<2001:67c:e0:0:0:0:0:6> has its level set to C<WARNING>.
+
+=back
+
+The easiest way to see what the actual arguments are is to run a test using the command line tool L<dnscheck> with the C<--raw> flag. With that
+flag, for each message the tag will be printed inside square brackets and all arguments are printed after it separated by semi-colons.
 
 =head3 policy.yaml
 

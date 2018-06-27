@@ -66,6 +66,11 @@ sub test {
         goto DONE;
     }
 
+    # Does this name encode a DNSCurve public key?
+    if ($nameserver =~ m|^uz5[0123456789bcdfghjklmnpqrstuvwxyz]{51}\.|i) {
+        $logger->auto( "NAMESERVER:DNSCURVE", $nameserver);
+    }
+
     my @addresses = $parent->dns->find_addresses( $nameserver, $self->qclass );
 
     $errors += $self->_test_ip( @addresses );
@@ -452,6 +457,10 @@ Test if the given server can be queried via TCP.
 =item ->ns_axfr($ip, [$name, $zone])
 
 Test if the given server allows transfer of the given zone.
+
+=item ->same_source($address)
+
+Checks that queries sent to a given address gets responses coming from the same address.
 
 =back
 

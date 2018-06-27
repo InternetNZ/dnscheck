@@ -52,7 +52,9 @@ sub test {
     return ( 0, 0 ) unless $parent->config->should_run;
 
     if ( !defined( $history ) && $parent->dbh ) {
-        $history = $parent->dbh->selectcol_arrayref( 'SELECT DISTINCT nameserver FROM delegation_history WHERE domain=?', undef, $zone );
+        $history =
+          $parent->dbh->selectcol_arrayref( 'SELECT DISTINCT nameserver FROM delegation_history WHERE domain=?',
+            undef, $zone );
     }
 
     my $qclass = $self->qclass;
@@ -125,7 +127,7 @@ sub _get_glue {
 
         if ( $ipv4 ) {
             my @sorted_ipv4 =
-              sort { $a->{name} cmp $b->{name} } ( $ipv4->answer, $ipv4->additional );
+              sort { $a->name cmp $b->name } ( $ipv4->answer, $ipv4->additional );
 
             foreach my $rr ( @sorted_ipv4 ) {
                 if ( $rr->type eq "A" and $rr->name eq $nameserver ) {
@@ -139,7 +141,7 @@ sub _get_glue {
 
         if ( $ipv6 ) {
             my @sorted_ipv6 =
-              sort { $a->{name} cmp $b->{name} } ( $ipv6->answer, $ipv6->additional );
+              sort { $a->name cmp $b->name } ( $ipv6->answer, $ipv6->additional );
 
             foreach my $rr ( @sorted_ipv6 ) {
                 if ( $rr->type eq "AAAA" and $rr->name eq $nameserver ) {
@@ -158,8 +160,7 @@ sub _get_glue {
 ################################################################
 
 sub consistent_glue {
-    my $self = shift;
-    my $zone = shift;
+    my ($self, $zone) = @_;
 
     my $parent = $self->parent;
     my $logger = $self->logger;
@@ -168,6 +169,7 @@ sub consistent_glue {
     return 0 unless $parent->config->should_run;
 
     my $errors = 0;
+    $zone =~ s/\.$//;
 
     # REQUIRE: check for inconsistent glue
     my @glue = _get_glue( $parent, $zone );
@@ -176,18 +178,28 @@ sub consistent_glue {
         $logger->auto( "DELEGATION:MATCHING_GLUE", $g->name, $g->address );
 
         # make sure we only check in-zone-glue
-        unless ( $g->name =~ /$zone$/i ) {
-            $logger->auto( "DELEGATION:GLUE_SKIPPED", $g->name, "out-of-zone" );
+        my $gname = $g->name;
+        $gname =~ s/\.$//;
+        unless ( $g->name =~ /(^|\.)$zone$/i ) {
+            $logger->auto( "DELEGATION:GLUE_SKIPPED", $g->name, "out-of-zone", $zone );
             next;
         }
 
         my $c = $parent->dns->query_child( $zone, $g->name, $g->class, $g->type );
+        my $chain = {};
 
+      RETEST:
         if ( $c and $c->header->rcode eq "NOERROR" ) {
             ## got NOERROR, might be good or bad - dunno yet
 
             if ( scalar( $c->answer ) > 0 ) {
                 ## got positive answer back, let's see if this makes any sense
+
+                # Not AUTH. Bad.
+                if ( $c and not $c->header->aa ) {
+                    $errors += $logger->auto( 'DELEGATION:CHILD_GLUE_NOT_AUTH', $zone, $g->name );
+                    next;
+                }
 
                 my $found = 0;
                 foreach my $rr ( $c->answer ) {
@@ -199,10 +211,17 @@ sub consistent_glue {
                         $logger->auto( "DELEGATION:GLUE_FOUND_AT_CHILD", $zone, $g->name, $g->address );
                         $found++;
                     }
+                    elsif ( $rr->type eq 'CNAME' ) {
+                        $errors += $logger->auto( 'DELEGATION:CHILD_GLUE_CNAME', $zone, $g->name );
+                    }
+                    elsif ( $rr->type eq 'DNAME' ) {
+                        $errors += $logger->auto( 'DELEGATION:CHILD_GLUE_DNAME', $zone, $g->name );
+                    }
                 }
 
-                unless ( $found ) {
-                    $errors += $logger->auto( "DELEGATION:INCONSISTENT_GLUE", $g->name );
+                if ( not $found ) {
+                    $errors += $logger->auto( "DELEGATION:INCONSISTENT_GLUE",
+                        $g->name, join( ',', map { $_->address } grep { $_->type eq $g->type } $c->answer ) );
                 }
             }
             elsif ( scalar( $c->authority ) > 0 ) {
@@ -218,8 +237,15 @@ sub consistent_glue {
 
                 ## got NOERROR and NS in authority section -> referer
                 if ( $ns ) {
-                    $logger->auto( "DELEGATION:GLUE_SKIPPED", $g->name, "referer" );
-                    next;
+                    $c = $self->follow_referral( $c, $g->name, $g->class, $g->type, $chain );
+                    if ( $c ) {
+                        $logger->auto( 'DELEGATION:GLUE_REFERRAL_FOLLOWED', $g->name );
+                        goto RETEST;
+                    }
+                    else {
+                        $errors += $logger->auto( 'DELEGATION:GLUE_BROKEN_REFERRAL', $g->name );
+                        next;
+                    }
                 }
 
                 ## got NOERROR and SOA in authority section -> not found
@@ -231,24 +257,20 @@ sub consistent_glue {
         }
         elsif ( $c and $c->header->rcode eq "REFUSED" ) {
             ## got REFUSED, probably not authoritative
-            $logger->auto( "DELEGATION:GLUE_SKIPPED", $g->name, "refused" );
+            $logger->auto( "DELEGATION:GLUE_ERROR_AT_CHILD", $g->name, "refused" );
             next;
         }
         elsif ( $c and $c->header->rcode eq "SERVFAIL" ) {
             ## got SERVFAIL, most likely not authoritative
-            $logger->auto( "DELEGATION:GLUE_SKIPPED", $g->name, "servfail" );
+            $logger->auto( "DELEGATION:GLUE_ERROR_AT_CHILD", $g->name, "servfail" );
             next;
         }
         else {
             ## got something else, let's blame the user...
-            $errors += $logger->auto( "DELEGATION:GLUE_MISSING_AT_CHILD", $g->name );
+            $errors += $logger->auto( "DELEGATION:GLUE_ERROR_AT_CHILD", $g->name, 'unknown problem' );
             next;
         }
     }
-
-    # TODO: check for loop in glue record chain (i.e. unresolvable)
-
-    # TODO: warning if glue chain is longer than 3 lookups
 
     return $errors;
 }
@@ -463,12 +485,13 @@ sub referral_size {
         $data{$nsname} = [ $self->parent->dns->find_addresses( $nsname, 'IN' ) ];
     }
 
-    my $min_size = $self->min_packet_length($zone, %data);
-    $self->parent->logger->auto('DELEGATION:MIN_REFERRAL_SIZE', $zone, $min_size);
+    my $min_size = $self->min_packet_length( $zone, %data );
+    $self->parent->logger->auto( 'DELEGATION:MIN_REFERRAL_SIZE', $zone, $min_size );
 
-    if ($min_size <= 512) {
+    if ( $min_size <= 512 ) {
         return $self->parent->logger->auto( 'DELEGATION:MIN_REFERRAL_SIZE_OK', $zone );
-    } else {
+    }
+    else {
         return $self->parent->logger->auto( 'DELEGATION:MIN_REFERRAL_SIZE_TOO_BIG', $zone, $min_size );
     }
 }
@@ -501,7 +524,7 @@ sub min_packet_length {
     my ( $self, $topdomain, %data ) = @_;
 
     # Create a packet with an NS query for the given domain
-    my $p = Net::DNS::Packet->new( _max_length_name_for( '.' . $topdomain ), 'NS', 'IN' );
+    my $p = Net::DNS::Packet->new( _max_length_name_for( $topdomain ), 'NS', 'IN' );
 
     # Add NS records for all given nameservers to Authority section
     foreach my $name ( keys %data ) {
@@ -537,6 +560,37 @@ sub min_packet_length {
     }
 
     return length( $p->data );
+}
+
+###
+### Helper method
+###
+
+sub follow_referral {
+    my ( $self, $packet, $name, $class, $type, $chain) = @_;
+
+    my %authority;
+    $authority{$_->name}{$_->address} = 1 for $packet->additional;
+
+    while (my ($k, $v) = each %authority) {
+        foreach my $addr (keys %$v) {
+            next if $chain->{$addr};
+            $chain->{$addr} = 1;
+            return $self->parent->dns->query_explicit($name, $class, $type, $addr);
+        }
+    }
+
+    foreach my $rr (grep {$_->type eq 'NS'} $packet->authority) {
+        my @addrs = $self->parent->dns->find_addresses($rr->nsdname, 'IN');
+        foreach my $addr (@addrs) {
+            next if $authority{$rr->nsdname}{$addr}; # We already tried this
+            next if $chain->{$addr};                 # Really, we tried this already!
+            $chain->{$addr} = 1;
+            return $self->parent->dns->query_explicit($name, $class, $type, $addr);
+        }
+    }
+
+    return;
 }
 
 1;
@@ -621,6 +675,10 @@ Internal utility function (not method) that takes a domain name and returns a ma
 Takes the name of a zone and data about its nameservers, and returns the size in octets of the smallest functional referral packet that can
 be built from the data given a query for a maximally long name. The C<%nsdata> hash should have nameservers names as keys, and references to
 lists of strings with IP addresses (v4 and v6) as values.
+
+=item follow_referral()
+
+Internal helper method.
 
 =back
 

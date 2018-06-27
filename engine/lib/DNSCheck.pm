@@ -40,6 +40,7 @@ use Carp;
 use List::Util qw[reduce max min];
 use Net::DNS;
 use Net::DNS::RR;
+
 use Storable qw[thaw];
 use MIME::Base64;
 
@@ -62,7 +63,7 @@ use DNSCheck::Lookup::Resolver;
 use DNSCheck::Lookup::ASN;
 use DNSCheck::Logger;
 
-our $VERSION = "1.5.0";
+our $VERSION = "1.6.6";
 
 ######################################################################
 
@@ -497,6 +498,11 @@ Add an item of "fake" glue data. For the given zone, the provided information
 will be used instead of what can be found live in DNS (if any). If an IP
 address is provided, it will be used. If not, an attempt to look up addresses
 for the name will be made. If that attempt fails, the name will be ignored.
+
+=item ->add_fake_ds($dsstring)
+
+Add a "fake" DS record to be used for DNSSEC tests during an undelegated test.
+The argument given must be a DS record in zone file format.
 
 =item ->undelegated_test()
 

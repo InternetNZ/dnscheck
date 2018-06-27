@@ -2,6 +2,7 @@ apps/dnscheck
 apps/dnscheck-12hourmailer
 apps/dnscheck-dispatcher
 apps/dnscheck-dnssecmailer
+apps/dnscheck-enqueue
 apps/dnscheck-hostsyntax
 apps/dnscheck-packetcheck
 apps/dnscheck-preflight
@@ -116,6 +117,8 @@ t/nameserver.t
 t/preflight.json
 t/preflight.t
 t/README
+t/referral_bug.json
+t/referral_bug.t
 t/resolver.json
 t/resolver.t
 t/soa.json

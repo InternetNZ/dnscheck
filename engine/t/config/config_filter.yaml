@@ -100,3 +100,10 @@ filters:
             args:
                 - iis.se
             level: 'WARNING'
+    'ADDRESS:BEGIN':
+        - args:
+            - '109.0.74.131'
+          level: 'NOTICE'
+        - args:
+            - '109.0.74.133'
+          level: 'WARNING'

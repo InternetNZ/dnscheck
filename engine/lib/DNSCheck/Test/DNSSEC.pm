@@ -47,7 +47,7 @@ sub algorithm_name {
     my $aid   = shift;
     my %names = (
         0   => 'Reserved (0)',
-        1   => 'RSA/MD5',
+        1   => 'RSA/MD5', # deprecated
         2   => 'Diffie-Hellman',
         3   => 'DSA/SHA1',
         4   => 'Reserved (ECC)',
@@ -61,6 +61,8 @@ sub algorithm_name {
         12  => 'GOST R 34.10-2001',
         13  => 'ECDSA Curve P-256 with SHA-256',
         14  => 'ECDSA Curve P-384 with SHA-384',
+        15  => 'Ed25519',
+        16  => 'Ed448',
         252 => 'Reserved (Indirect keys)',
         253 => 'Private algorithm (domain name)',
         254 => 'Private algorithm (OID)',
@@ -70,7 +72,7 @@ sub algorithm_name {
     if ( $names{$aid} ) {
         return $names{$aid};
     }
-    elsif ( $aid >= 13 and $aid <= 122 ) {
+    elsif ( $aid >= 17 and $aid <= 122 ) {
         return "Unassigned ($aid)";
     }
     elsif ( $aid >= 123 and $aid <= 251 ) {
@@ -184,13 +186,14 @@ sub test {
     my $nsec3p = $parent->dns->query_child($zone, $zone, $qclass, 'NSEC3PARAM');
 
     my $nsec3param_rr;
+    my $iterations = $parent->config->get( "params" )->{'NSEC3:ITERATIONS'} || 150;
     ($nsec3param_rr) = grep {$_->type eq 'NSEC3PARAM'} $nsec3p->answer if $nsec3p;
     if ($nsec3param_rr) {
         $logger->auto( 'DNSSEC:NSEC3PARAM_FOUND', $zone);
-        if ($nsec3param_rr->iterations >= 150) {
-            $logger->auto('DNSSEC:NSEC3_TOO_MANY_ITERATIONS', $zone, $nsec3param_rr->iterations);
+        if ($nsec3param_rr->iterations > $iterations) {
+            $logger->auto('DNSSEC:NSEC3_TOO_MANY_ITERATIONS', $zone, $nsec3param_rr->iterations, $iterations);
         } else {
-            $logger->auto('DNSSEC:NSEC3_ITERATIONS_OK', $zone, $nsec3param_rr->iterations);
+            $logger->auto('DNSSEC:NSEC3_ITERATIONS_OK', $zone, $nsec3param_rr->iterations, $iterations);
         }
     } else {
         $logger->auto( 'DNSSEC:NSEC3PARAM_NOT_FOUND', $zone);
@@ -585,7 +588,7 @@ sub check_algorithm {
     my $aid    = shift;
 
     #    0   => Reserved
-    #    1   => RSA/MD5
+    #    1   => RSA/MD5 (deprecated)
     #    2   => Diffie-Hellman
     #    3   => DSA/SHA1
     #    4   => Reserved (ECC)
@@ -597,17 +600,24 @@ sub check_algorithm {
     #    10  => RSA/SHA-512
     #    11  => Unassigned
     #    12  => GOST R 34.10-2001
-    #    13-122 => Unassigned
+    #    13  => ECDSA Curve P-256 with SHA-256
+    #    14  => ECDSA Curve P-384 with SHA-384
+    #    15  => Ed25519
+    #    16  => Ed448
+    #    17-122 => Unassigned
     #    123-251 => Reserved
     #    252 => Reserved (Indirect keys)
     #    253 => Private algorithm (domain name)
     #    254 => Private algorithm (OID)
     #    255 => Reserved
 
-    if ( $aid == 0 or $aid == 4 or ( $aid >= 123 and $aid <= 252 ) or $aid == 255 ) {
+    if ( $aid == 1 ) {
+        return $logger->auto( 'DNSSEC:ALGORITHM_DEPRECATED', $aid );
+    }
+    elsif ( $aid == 0 or $aid == 4 or ( $aid >= 123 and $aid <= 252 ) or $aid == 255 ) {
         return $logger->auto( 'DNSSEC:ALGORITHM_RESERVED', $aid );
     }
-    elsif ( $aid == 9 or $aid == 11 or ( $aid >= 13 and $aid <= 122 ) ) {
+    elsif ( $aid == 9 or $aid == 11 or ( $aid >= 17 and $aid <= 122 ) ) {
         return $logger->auto( 'DNSSEC:ALGORITHM_UNASSIGNED', $aid );
     }
     elsif ( $aid == 253 or $aid == 254 ) {

@@ -40,8 +40,8 @@ $res->add_fake_glue('lysator.liu.se', 'ns-slave-1.ifm.liu.se', '212.247.8.152');
 my @tmp = $res->faked_zones;
 is($tmp[0], 'lysator.liu.se', 'Zone is listed as faked');
 @tmp = $res->faked_zone('lysator.liu.se');
-is_deeply(\@tmp,
-        [qw(ns-slave.lysator.liu.se ns-slave-1.ifm.liu.se ns-master.lysator.liu.se)],
+is_deeply([sort @tmp],
+        [sort qw(ns-slave.lysator.liu.se ns-slave-1.ifm.liu.se ns-master.lysator.liu.se)],
         'Faked NS list looks OK');
 
 $p = $res->recurse('www.lysator.liu.se', 'A');

@@ -34,11 +34,28 @@ require 5.010001;
 use warnings;
 use strict;
 use utf8;
+use version;
 
 use base 'DNSCheck::Test::Common';
 
 use Net::IP 1.25 qw(ip_get_version);
 use Net::DNS;
+
+######################################################################
+
+###
+### Remove "helpful" behaviour added in Net::DNS 0.69
+###
+
+BEGIN {
+    if (version->parse($Net::DNS::VERSION) > version->parse(0.68)) {
+        require Net::DNS::Mailbox;
+        no warnings 'redefine';
+        *Net::DNS::Mailbox::address = sub {
+            return join('.', $_[0]->label);
+        };
+    }
+}
 
 ######################################################################
 
@@ -214,10 +231,8 @@ sub test_soa_rname {
     if ( $soa->rname =~ /^(.+?)(?<!\\)\.(.+)$/ ) {
         my $mailaddr = $soa->rname;
 
-        if ( Net::DNS->version <= 0.68 ) {    # They changed the API in 0.68_09
-            $mailaddr =~ s/(?<!\\)\./@/;      # Replace unescaped dot with at-sign
-            $mailaddr =~ s/\\\././g;          # De-escape escaped dots.
-        }
+        $mailaddr =~ s/(?<!\\)\./@/;      # Replace unescaped dot with at-sign
+        $mailaddr =~ s/\\\././g;          # De-escape escaped dots.
 
         if ( $parent->mail->test( $mailaddr, $zone ) ) {
             $logger->auto( "SOA:RNAME_UNDELIVERABLE", $zone, $soa->rname, $mailaddr );

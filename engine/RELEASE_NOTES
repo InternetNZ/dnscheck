@@ -1,3 +1,65 @@
+Release Notes for DNSCheck Lib v1.6.6
+=====================================
+
+* Two bugfixes related to case-sensitivity when comparing sets of NS and SOA records.
+
+* Verification that all our tests still pass when run with Net::DNS version 0.80 and Net::DNS::SEC 0.20 on Perl versions 5.14.4, 5.16.3, 5.18.2, 5.20.1 and 5.21.4. With Perl versions 5.10.1 and 5.12.5, Net::DNS::SEC 0.20 does not pass its own tests (tested on OSX 10.9 and Ubuntu Server 14.04). While there is no reason to assume it will not work for DNSCheck, we are unable to verify that it does.
+
+Release Notes for DNSCheck Lib v1.6.5
+=====================================
+
+* Further adaptation to new versions of Net::DNS and Net::DNS::SEC. As of this version, Makefile.PL will complain and refuse to run if it sees a Net::DNS or Net::DNS::SEC version known to be too problematic to use.
+
+* The list of reserved IP address ranges have had two IPv6 ranges that were returned to IANA removed, and 6to4 addresses have been reclassified from reserved to discouraged.
+
+* In some cases DNSCheck will provide more diagnostics when there are multiple problems with adresses for MX records.
+
+* When determining which nameserver names to test, case differences will no longer cause the same server to be tested repeatedly.
+
+Release Notes for DNSCheck Lib v1.6.4
+=====================================
+
+* This release is entirely to support the incompatible changes in Net::DNS 0.75 (where we did things wrong) and Net::DNS::SEC 0.18.
+
+Release Notes for DNSCheck Lib v1.6.3
+=====================================
+
+* Swedish translations of new messages.
+
+* Debian packaging fixes.
+
+* Raise required version of Net::DNS and Net::DNS::SEC.
+
+* Small bugfix contributed by Anand.
+
+Release Notes for DNSCheck Lib v1.6.2
+=====================================
+
+* Several bugfixes.
+
+* Adds test for labels of the form "yy--something" where the first two characters are not "xn".
+
+Release Notes for DNSCheck Lib v1.6.0
+=====================================
+
+* Recognizes all DNSKEY algorithms currently registered by IANA.
+
+* Logger can be configured to run a callback in user code when a new message is logged.
+
+* Detects zones using DNSCurve encryption.
+
+* Glue tests much improved.
+
+* Hostname check now detects use of reserved domain names according to RFC 6761.
+
+* The default configuration now uses an ASN lookup service hosted by .SE rather than the one hosted by Team Cymru (the ASN data still comes from Team Cymru, .SE just provides the lookup service).
+
+* ASN check now logs a message if it sees a reserved AS number in use.
+
+* Bugfixes, of course.
+
+* Tested with Perl versions 5.10.1, 5.12.5, 5.14.4, 5.16.3 and 5.18.2.
+
 Release Notes for DNSCheck Lib v1.4.0
 =====================================
 
