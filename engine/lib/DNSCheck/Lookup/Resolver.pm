@@ -68,6 +68,7 @@ sub new {
 
     $self->{cache}   = $parent->config->get( 'root_zone_data' );
     $self->{current} = '';
+    $self->{use_nsid} = 0;
 
     $self->{resolver} = Net::DNS::Resolver->new(
 
@@ -147,14 +148,10 @@ sub nsid {
     my $self = shift;
 
     if (@_) {
-        $self->{optrr} = new Net::DNS::RR (
-            type => 'OPT',
-            name => '',
-            optioncode => 3, # NSID == 3
-        );
+	$self->{use_nsid} = @_;
     }
     else {
-        return (defined $self->{optrr});
+	return $self->{use_nsid};
     }
 }
 
@@ -502,7 +499,7 @@ sub get {
     my $qry_pkt = new Net::DNS::Packet( $name, $class, $type );
     if ($self->nsid) {
         # Add the OPT RR to the packet
-        $qry_pkt->unique_push(additional => $self->{optrr});
+        $qry_pkt->edns->option( NSID => 0x00 );
     }
 
     my $before   = [ gettimeofday() ];

@@ -1054,25 +1054,10 @@ sub query_nsid {
     # No additional record came with the response
     return [] if (!$response->additional);
 
-    #--------------
-    # NSID data is binary and contains:
-    # first two octets represent the option (3),
-    # two octets representing the length of the ID
-    # the rest is the ID
-    my ($opt_id, $nsid_len, $nsid_str) = unpack("nna*", $response->pop('additional')->rdata);
+    # Newer versions of Net::DNS provide access to the OPT records
+    my $print_nsid = $response->edns->option(3);
 
-    return [] if ($opt_id eq "");
-
-    my ($hex_nsid, $print_nsid) = ('') x 2;
-    # If the rdata makes sense
-    if ($opt_id == 3 && $nsid_len > 0) {
-        $hex_nsid = join("", map { sprintf "%02x", $_ }
-                        unpack("C*", $nsid_str));
-        # Remove all non-printable characters
-        $print_nsid = $nsid_str =~ tr/[\0-\x08\x0B\x0C\x0E-\x1F\x7F]/ /r;
-    }
-
-    return [$hex_nsid, $print_nsid];
+    return [$print_nsid];
 }
 
 
