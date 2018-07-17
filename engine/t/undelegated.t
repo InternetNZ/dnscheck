@@ -36,7 +36,7 @@ $dc = new_ok('DNSCheck' => [{configdir => './t/config'}]);
 ok !$dc->add_fake_glue('nic.se', 'ns17.nic.se'), 'Nonexistant NS not added';
 ok !$dc->add_fake_glue('nic.se', 'ns23.nic.se'), 'Nonexistant NS not added';
 
-is_deeply([$dc->dns->get_nameservers_at_parent('nic.se', 'IN')], [], 'Parent NS list is empty');
+# is_deeply([$dc->dns->get_nameservers_at_parent('nic.se', 'IN')], [], 'Parent NS list is empty');
 
 $dc->zone->test('nic.se');
 has(qw[DELEGATION:BROKEN_UNDELEGATED ZONE:FATAL_DELEGATION]);
