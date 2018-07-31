@@ -831,8 +831,8 @@ messages:
     descr: The name server failed to answer queries sent over UDP.  This is probably due to the name server not correctly set up or due to misconfigured filtering in a firewall.
     format: Name server %s (%s) does not answer queries over UDP.
   NAMESERVER:NSID:
-    args: 4
-    format: 'Name server ID for %s (%s): %s "%s"'
+    args: 3
+    format: 'Name server ID for %s (%s): %s'
   NAMESERVER:NSID_SKIP:
     args: 2
     format: Name server %s (%s) not checked for name server ID.

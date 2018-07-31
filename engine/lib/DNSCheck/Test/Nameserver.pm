@@ -184,9 +184,9 @@ sub _test_ip {
 
         $logger->auto("NAMESERVER:CHECKING_NSID", $nameserver, $address);
         my $nsid = $parent->dns->query_nsid($address, $zone, $qclass, "SOA");
-        if ( @$nsid) {
+        if (defined($nsid)) {
             # $nsid is a array ref, with two values
-            $logger->auto("NAMESERVER:NSID", $nameserver, $address, @$nsid);
+            $logger->auto("NAMESERVER:NSID", $nameserver, $address, $nsid);
         }
     }
 

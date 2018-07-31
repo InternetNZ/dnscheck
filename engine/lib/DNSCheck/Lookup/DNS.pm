@@ -1020,9 +1020,9 @@ sub check_axfr {
     $resolver->tcp_timeout( $timeout );
 
     $resolver->nameservers( $address );
-    $resolver->axfr_start( $qname, $qclass );
+    my @zone = $resolver->axfr( $qname, $qclass );
 
-    if ( $resolver->axfr_next ) {
+    if (@zone) {
         return 1;
     }
 
@@ -1046,18 +1046,18 @@ sub query_nsid {
     my $response = $self->query_explicit( $qname, $qclass, $qtype, $address, { nsid => 1 });
 
     # Query failed
-    return [] unless ($response);
+    return undef unless ($response);
 
     # Response is empty
-    return [] if ($response->header->ancount == 0);
+    return undef if ($response->header->ancount == 0);
 
     # No additional record came with the response
-    return [] if (!$response->additional);
+    return undef if (!$response->additional);
 
     # Newer versions of Net::DNS provide access to the OPT records
     my $print_nsid = $response->edns->option(3);
 
-    return [$print_nsid];
+    return $print_nsid;
 }
 
 
@@ -1246,11 +1246,11 @@ Send a query to the default resolver(s). This will be a L<DNSCheck::Lookup::Reso
 
 =item my $bool = $dns->check_axfr(I<address>, I<qname>, I<qclass>);
 
-=item my ($hex_id, $print_id) = $dns->query_nsid(I<address>, I<qname>, I<qclass>, I<qtype>);
+=item my $print_id = $dns->query_nsid(I<address>, I<qname>, I<qclass>, I<qtype>);
 
 Queries an specific address for <qname, qclass, qtype> setting the NSID
 (RFC 5001) option. If the response contains NSID info, it will return
-the hex representation of the string, and a printable version.
+the printable version. If NSID is not supported, returns undef
 
 =item ->add_blacklist($addr,$name,$class,$type)
 
