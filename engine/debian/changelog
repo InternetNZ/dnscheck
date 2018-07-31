@@ -1,6 +1,6 @@
-libdnscheck-perl (1.6.3-1) trusty; urgency=medium
+libdnscheck-perl (1.6.6-1) trusty; urgency=medium
 
-  * Release 1.6.3. 
+  * Release 1.6.6. 
 
  -- calle <calle@trettontio>  Wed, 12 Feb 2014 15:18:20 +0100
 
